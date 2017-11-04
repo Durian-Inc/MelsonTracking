@@ -11,6 +11,32 @@
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp">
 
+        <LinearLayout android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            >
+
+            <EditText
+                android:id="@+id/movieSearch"
+                style="@style/Widget.AppCompat.Light.AutoCompleteTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                tools:layout_editor_absoluteX="66dp"
+                tools:layout_editor_absoluteY="20dp"
+                android:hint="Search" />
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_alignParentTop="true"
+                android:id="@+id/movieCardsRecycle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                />
+
+        </LinearLayout>>
+
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/floatingActionButton"
             android:layout_width="wrap_content"
@@ -25,15 +51,6 @@
             tools:layout_editor_absoluteY="453dp"
             app:fabSize="normal"
             style="@style/floating_action_button"/>
-
-        <android.support.v7.widget.RecyclerView
-            android:layout_alignParentTop="true"
-            android:id="@+id/movieCardsRecycle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/floatingActionButton"
-            android:layout_centerHorizontal="true"
-            />
 
     </RelativeLayout>
 
