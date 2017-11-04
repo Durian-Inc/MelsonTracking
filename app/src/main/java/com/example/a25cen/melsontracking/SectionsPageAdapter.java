@@ -20,13 +20,23 @@ public class SectionsPageAdapter extends FragmentPagerAdapter{
         super(fm);
     }
 
+    public void  addFragment(Fragment fragment, String title){
+        fragmentList.add(fragment);
+        fragmentTitles.add(title);
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return fragmentTitles.get(position);
+    }
+
     @Override
     public int getCount() {
-        return 0;
+        return fragmentList.size();
     }
 
     @Override
     public Fragment getItem(int position) {
-        return null;
+        return fragmentList.get(position);
     }
 }
