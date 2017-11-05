@@ -16,6 +16,7 @@ public class PeopleFragment extends Fragment {
     private final String TAG = "People Fragment";
     @Nullable
     @Override
+
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "The people are showing");
 
