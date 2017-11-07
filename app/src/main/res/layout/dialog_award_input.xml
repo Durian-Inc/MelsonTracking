@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        >
+        <TextView
+            android:id="@+id/textAwardName"
+            style="@style/DialogTextView"
+            android:text="Award: "
+            android:layout_alignBottom="@id/editAwardName"
+            />
+        <EditText
+            android:id="@+id/editAwardName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/textAwardName"
+            android:hint="Oscar"
+            android:inputType="text"
+            />
+        <TextView
+            android:id="@+id/textAwardGiver"
+            style="@style/DialogTextView"
+            android:text="Award Giver: "
+            android:layout_below="@id/textAwardName"
+            android:layout_alignBottom="@id/editAwardGiver"
+            />
+        <EditText
+            android:id="@+id/editAwardGiver"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editAwardName"
+            android:layout_toRightOf="@id/textAwardGiver"
+            android:hint="Festival"
+            android:inputType="text"/>
+        <TextView
+            android:id="@+id/textAwardYear"
+            style="@style/DialogTextView"
+            android:layout_below="@+id/textAwardGiver"
+            android:text="Year: " />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editAwardYear"
+            android:layout_toRightOf="@+id/textAwardYear"
+            android:layout_below="@id/editAwardGiver"
+            android:hint="XXXX"
+            android:inputType="numberSigned"/>
+
+        <TextView
+            android:id="@+id/textWon"
+            style="@style/DialogTextView"
+            android:layout_below="@id/textAwardYear"
+            android:text="Won: "
+            />
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/radioWon"
+            android:layout_below="@id/textWon"
+            >
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes"
+                android:id="@+id/radioWonYes"
+                />
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No"
+                android:id="@+id/radioWonNo"
+                />
+        </RadioGroup>
+    </RelativeLayout>
+</android.support.constraint.ConstraintLayout>

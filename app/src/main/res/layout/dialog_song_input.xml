@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        >
+        <TextView
+            android:id="@+id/textSongName"
+            style="@style/DialogTextView"
+            android:text="Name:"
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editSongName"
+            android:inputType="text"
+            android:layout_toRightOf="@+id/textSongName"
+            android:hint="Song name"
+            />
+        <TextView
+            android:id="@+id/textSongYear"
+            style="@style/DialogTextView"
+            android:layout_below="@id/textSongName"
+            android:text="Year: "/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/textSongYear"
+            android:id="@+id/editSongYear"
+            android:layout_below="@+id/editSongName"
+            android:hint="XXXX"
+            android:inputType="numberSigned"/>
+
+        <TextView
+            android:id="@+id/textSongOriginal"
+            style="@style/DialogTextView"
+            android:layout_below="@id/textSongYear"
+            android:text="Original: "
+            />
+        <RadioGroup
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/radioSongOriginal"
+            android:layout_below="@+id/textSongOriginal">
+            <RadioButton android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Yes"
+                android:id="@+id/radioSongYes"/>
+            <RadioButton android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="No"
+                android:id="@+id/radioSongNo"/>
+        </RadioGroup>
+
+    </RelativeLayout>
+</android.support.constraint.ConstraintLayout>

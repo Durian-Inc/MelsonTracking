@@ -24,7 +24,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/textName"
-            android:inputType="textPersonName"/>
+            android:inputType="textPersonName"
+            android:hint="First Last"/>
         <TextView
             android:id="@+id/textGender"
             style="@style/DialogTextView"
@@ -34,8 +35,7 @@
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/editName"
-            android:layout_toRightOf="@id/textGender"
+            android:layout_below="@id/textGender"
             android:id="@+id/radioGender"
             android:paddingTop="4dp"
             >
@@ -59,16 +59,18 @@
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/radioGender"
-            android:layout_toRightOf="@id/textRole"
+            android:layout_below="@id/textRole"
             android:id="@+id/radioRoles"
             android:paddingTop="4dp"
-            android:layout_alignTop="@id/textRole"
             >
-            <RadioButton android:layout_height="wrap_content"
+
+            <RadioButton
+                android:id="@+id/radioStar"
                 android:layout_width="wrap_content"
-                android:text="Star"
-                android:id="@+id/radioStar"/>
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/textRole"
+                android:text="Star" />
             <RadioButton android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="Writer"
@@ -77,6 +79,10 @@
                 android:layout_width="wrap_content"
                 android:text="Director"
                 android:id="@+id/radioDirector"/>
+            <RadioButton android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="All"
+                android:id="@+id/radioAll"/>
         </RadioGroup>
 
 
