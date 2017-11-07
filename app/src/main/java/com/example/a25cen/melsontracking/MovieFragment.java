@@ -3,7 +3,9 @@ package com.example.a25cen.melsontracking;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,10 +13,12 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 /**
- * Created by 25cen on 11/2/17.
+ * Created by Innocent Niyibizi on 11/2/17.
  */
 
-public class MovieFragment extends Fragment {
+
+public class MovieFragment extends Fragment{
+
     private  final String TAG = "Movie Fragment";
     @Nullable
     @Override
@@ -27,13 +31,23 @@ public class MovieFragment extends Fragment {
         addMovie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "A movie will be added", Toast.LENGTH_LONG).show();
+                showDialogs();
             }
         });
         return view;
     }
+
     /* TODO
     *   Write the function that will expand and collapse
     * */
+
+    private void showDialogs()
+    {
+        Toast.makeText(getActivity(), "Show dialog function has been called", Toast.LENGTH_SHORT).show();
+        FragmentManager fm = getFragmentManager();
+        AddMovieDialog addMovieDialog = new AddMovieDialog();
+        addMovieDialog.show(fm, "AddMovieFragment");
+        Toast.makeText(getActivity(), "Movie has been added", Toast.LENGTH_SHORT).show();
+    }
 
 }

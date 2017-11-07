@@ -76,5 +76,15 @@
                 android:id="@+id/radioWonNo"
                 />
         </RadioGroup>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/radioWon"
+            android:layout_alignParentRight="true"
+            android:text="Next"
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/btnAwardNext"
+            />
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

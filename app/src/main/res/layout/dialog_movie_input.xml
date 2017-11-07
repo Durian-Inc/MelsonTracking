@@ -11,7 +11,8 @@
         android:orientation="horizontal"
         android:padding="16dp"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="1dp">
+        tools:layout_editor_absoluteY="1dp"
+        tools:ignore="MissingConstraints">
 
         <TextView
             android:text="Title: "
@@ -28,7 +29,7 @@
             android:layout_toRightOf="@id/textMovie"/>
 
         <TextView
-            android:id="@+id/textDurration"
+            android:id="@+id/textMovieDurration"
             style="@style/DialogTextView"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/textMovie"
@@ -37,25 +38,33 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/textDurration"
+            android:layout_toRightOf="@id/textMovieDurration"
             android:layout_below="@id/editMovieTitle"
             android:hint="Runtime (mins)"
-            android:id="@+id/editDurration"
+            android:id="@+id/editMovieDurration"
             android:inputType="numberSigned"/>
 
         <TextView
-            android:id="@+id/textBudget"
+            android:id="@+id/textMovieBudget"
             style="@style/DialogTextView"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/textDurration"
+            android:layout_below="@+id/textMovieDurration"
             android:text="Budget: " />
         <EditText android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/editBudget"
-            android:layout_toRightOf="@id/textBudget"
-            android:layout_below="@id/editDurration"
+            android:id="@+id/editMovieBudget"
+            android:layout_toRightOf="@id/textMovieBudget"
+            android:layout_below="@id/editMovieDurration"
             android:hint="15000000"
             android:inputType="numberSigned"/>
+        <Button android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editMovieBudget"
+            android:layout_alignParentRight="true"
+            android:text="Next"
+            android:id="@+id/btnMovieNext"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            />
 
 
     </RelativeLayout>

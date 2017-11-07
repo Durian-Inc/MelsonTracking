@@ -55,5 +55,15 @@
                 android:id="@+id/radioSongNo"/>
         </RadioGroup>
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/radioSongOriginal"
+            android:layout_alignParentRight="true"
+            android:text="Finish"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:id="@+id/btnSongFinsih"
+            />
+
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

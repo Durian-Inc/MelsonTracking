@@ -58,4 +58,13 @@
         <item name="android:layout_centerInParent">true</item>
     </style>
 
+    <style name="ButtonTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorButtonNormal">@color/colorPrimary</item>
+        <item name="colorControlHighlight">@color/colorAccent</item>
+        <item name="android:buttonStyle">Base.Widget.AppCompat.Button.Borderless</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentRight">true</item>
+    </style>
+
 </resources>
