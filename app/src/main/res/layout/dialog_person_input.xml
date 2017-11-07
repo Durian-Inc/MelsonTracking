@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-->
+    TODO
+    Create a style for the edit texts
+    <-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        >
+        <TextView
+            style="@style/DialogTextView"
+            android:text="Name: "
+            android:id="@+id/textName"
+            android:layout_alignBottom="@id/editName"
+            />
+        <EditText
+            android:id="@+id/editName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/textName"
+            android:inputType="textPersonName"/>
+        <TextView
+            android:id="@+id/textGender"
+            style="@style/DialogTextView"
+            android:layout_below="@id/textName"
+            android:text="Gender:"
+            />
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editName"
+            android:layout_toRightOf="@id/textGender"
+            android:id="@+id/radioGender"
+            android:paddingTop="4dp"
+            >
+
+            <RadioButton android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Male"
+                android:id="@+id/radioMale"/>
+            <RadioButton android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Female"
+                android:id="@+id/radioFemale"/>
+        </RadioGroup>
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>
