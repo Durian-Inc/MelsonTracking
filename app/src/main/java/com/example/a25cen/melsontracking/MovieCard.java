@@ -1,23 +1,42 @@
 package com.example.a25cen.melsontracking;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Innocent on 11/4/17.
  */
 
 public class MovieCard {
 
-    private String title, releaseYear = "";
-    private int runtime, rating = 0;
+    private String title;
+    private int runtime, rating = 0, releaseYear;
     private  float budget = 0;
 
-    public MovieCard(String title, String releaseYear, int runtime, int rating, float budget ) {
+    public MovieCard(String title, int releaseYear, int runtime, float budget ) {
         this.title = title;
         this.budget = budget;
-        this.rating = rating;
         this.releaseYear = releaseYear;
         this.runtime = runtime;
     }
 
     //No getters or setters because it is all handled in the DB and this is only used to transfer
     //information to the movie
+
+    public String getTitle() {
+        return title;
+    }
+
+    public int getRuntime() {
+        return runtime;
+    }
+
+    public int getReleaseYear() {
+        return releaseYear;
+    }
+
+    public float getBudget() {
+        return budget;
+    }
 }
+
