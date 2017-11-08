@@ -46,8 +46,10 @@ public class MovieFragment extends Fragment{
         Toast.makeText(getActivity(), "Show dialog function has been called", Toast.LENGTH_SHORT).show();
         FragmentManager fm = getFragmentManager();
         AddMovieDialog addMovieDialog = new AddMovieDialog();
+        //TODO
+        //Use the isVisible function to maybe cycle through dialogs
+        //Use a lists with all the dialogs and cycle through them accordingly.
         addMovieDialog.show(fm, "AddMovieFragment");
-        Toast.makeText(getActivity(), "Movie has been added", Toast.LENGTH_SHORT).show();
     }
 
 }

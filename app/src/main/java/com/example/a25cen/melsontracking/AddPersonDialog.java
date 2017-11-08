@@ -1,0 +1,70 @@
+package com.example.a25cen.melsontracking;
+
+import android.app.DialogFragment;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
+
+/**
+ * Created by 25cen on 11/7/17.
+ */
+
+public class AddPersonDialog extends DialogFragment {
+
+    private EditText personName;
+    private int personRole = -1;
+    private int personGender = -1;
+    private Button btnNextPerson;
+    private RadioGroup radioGroupRoles;
+    private RadioGroup radioGroupGender;
+    private RadioButton tempRadio;
+    private int tempRadioId;
+
+
+    public AddPersonDialog() {
+
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.dialog_person_input, container);
+        getDialog().setTitle("Enter a person");
+
+        personName = view.findViewById(R.id.editName);
+        btnNextPerson = view.findViewById(R.id.btnPerseonNext);
+        radioGroupGender = view.findViewById(R.id.radioGender);
+        radioGroupRoles = view.findViewById(R.id.radioRoles);
+        btnNextPerson.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tempRadioId = radioGroupGender.getCheckedRadioButtonId();
+                tempRadio = view.findViewById(tempRadioId);
+                personGender = radioGroupGender.indexOfChild(tempRadio);
+
+                tempRadioId = radioGroupGender.getCheckedRadioButtonId();
+                tempRadio = view.findViewById(tempRadioId);
+                personRole = radioGroupRoles.indexOfChild(tempRadio);
+                if (personGender == -1 && personRole == -1 && personName.getText().length() < 1)
+                {
+                    Toast.makeText(getContext(), "Please enter data in all fields!", Toast.LENGTH_SHORT).show();
+                }
+                else
+                    dismiss();
+            }
+        });
+
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+
+        return view;
+    }
+}
