@@ -3,6 +3,7 @@ package com.example.a25cen.melsontracking;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,6 +27,7 @@ public class MovieFragment extends Fragment{
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager layoutManager;
     ArrayList<MovieCard> list;
+    ArrayList<DialogFragment> dialogFragments;
 
     private  final String TAG = "Movie Fragment";
     @Nullable
@@ -73,12 +75,19 @@ public class MovieFragment extends Fragment{
 
     private void showDialogs()
     {
+        dialogFragments = new ArrayList<DialogFragment>();
         FragmentManager fm = getFragmentManager();
-        AddMovieDialog addMovieDialog = new AddMovieDialog();
+        dialogFragments.add(new AddMovieDialog());
+        dialogFragments.add(new AddPersonDialog());
+        //dialogFragments.add(new AddAwardDialog());
+        //dialogFragments.add(new AddSongDialog());
+
         //TODO
         //Use the isVisible function to maybe cycle through dialogs
         //Use a lists with all the dialogs and cycle through them accordingly.
-        addMovieDialog.show(fm, "AddMovieFragment");
+        for(DialogFragment dialogFragment: dialogFragments){
+            dialogFragment.show(fm, dialogFragment.getTag());
+        }
     }
 
 }
