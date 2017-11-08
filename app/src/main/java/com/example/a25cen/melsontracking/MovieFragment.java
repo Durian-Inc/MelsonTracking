@@ -47,7 +47,6 @@ public class MovieFragment extends Fragment{
         FragmentManager fm = getFragmentManager();
         AddMovieDialog addMovieDialog = new AddMovieDialog();
         addMovieDialog.show(fm, "AddMovieFragment");
-        Toast.makeText(getActivity(), "Movie has been added", Toast.LENGTH_SHORT).show();
     }
 
 }
