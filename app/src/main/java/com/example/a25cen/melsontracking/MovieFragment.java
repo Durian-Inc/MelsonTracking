@@ -1,5 +1,6 @@
 package com.example.a25cen.melsontracking;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -64,7 +66,7 @@ public class MovieFragment extends Fragment{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        list = new ArrayList<MovieCard>();
+        list = new ArrayList<>();
         list.add(new MovieCard("Bee Movie", 2007, 95,150000000));
         list.add(new MovieCard("Top Gun", 1986, 95, 15000000));
     }
@@ -75,19 +77,21 @@ public class MovieFragment extends Fragment{
 
     private void showDialogs()
     {
-        dialogFragments = new ArrayList<DialogFragment>();
-        FragmentManager fm = getFragmentManager();
-        dialogFragments.add(new AddMovieDialog());
-        dialogFragments.add(new AddPersonDialog());
-        //dialogFragments.add(new AddAwardDialog());
-        //dialogFragments.add(new AddSongDialog());
+        dialogFragments = new ArrayList<>();
+        final FragmentManager fm = getFragmentManager();
+        AddMovieDialog addMovieDialog = new AddMovieDialog();
+        final AddSongDialog addSongDialog = new AddSongDialog();
+        addMovieDialog.show(fm, addMovieDialog.getTag());
+//        dialogFragments.add(new AddPersonDialog());
+//        dialogFragments.add(new AddAwardDialog());
+//        dialogFragments.add(new AddSongDialog());
 
         //TODO
         //Use the isVisible function to maybe cycle through dialogs
         //Use a lists with all the dialogs and cycle through them accordingly.
-        for(DialogFragment dialogFragment: dialogFragments){
-            dialogFragment.show(fm, dialogFragment.getTag());
-        }
+
+
+
     }
 
 }
