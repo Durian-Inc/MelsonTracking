@@ -75,12 +75,12 @@ public class MovieFragment extends Fragment{
 
     private void showDialogs()
     {
-        dialogFragments = new ArrayList<DialogFragment>();
+        dialogFragments = new ArrayList<>();
         FragmentManager fm = getFragmentManager();
         dialogFragments.add(new AddMovieDialog());
         dialogFragments.add(new AddPersonDialog());
-        //dialogFragments.add(new AddAwardDialog());
-        //dialogFragments.add(new AddSongDialog());
+        dialogFragments.add(new AddAwardDialog());
+        dialogFragments.add(new AddSongDialog());
 
         //TODO
         //Use the isVisible function to maybe cycle through dialogs

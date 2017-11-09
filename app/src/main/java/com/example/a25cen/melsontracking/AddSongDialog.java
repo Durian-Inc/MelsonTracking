@@ -37,6 +37,7 @@ public class AddSongDialog extends DialogFragment {
 
         songName = view.findViewById(R.id.editSongName);
         songYear = view.findViewById(R.id.editSongYear);
+        radioGroupOriginal = view.findViewById(R.id.radioSongOriginal);
         tempRadioId = radioGroupOriginal.getCheckedRadioButtonId();
         radioButtonSelected = view.findViewById(tempRadioId);
         songFinsih = view.findViewById(R.id.btnSongFinsih);
