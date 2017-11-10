@@ -1,8 +1,10 @@
 package com.example.a25cen.melsontracking;
 
+import android.content.DialogInterface;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +26,14 @@ public class AddAwardDialog extends DialogFragment {
     private Button btnAwardNext;
 
     public AddAwardDialog() {
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        FragmentManager fm = getFragmentManager();
+        AddSongDialog addSongDialog = new AddSongDialog();
+        addSongDialog.show(fm, "Song!");
     }
 
     @Nullable
