@@ -34,8 +34,8 @@ public class AddMovieDialog extends DialogFragment {
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
         FragmentManager fm = getFragmentManager();
-        AddSongDialog addSongDialog = new AddSongDialog();
-        addSongDialog.show(fm, "Song");
+        AddPersonDialog addPersonDialog = new AddPersonDialog();
+        addPersonDialog.show(fm, "Song");
     }
 
     @Nullable

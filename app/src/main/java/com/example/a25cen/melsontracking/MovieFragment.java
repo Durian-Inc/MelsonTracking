@@ -82,15 +82,6 @@ public class MovieFragment extends Fragment{
         AddMovieDialog addMovieDialog = new AddMovieDialog();
         final AddSongDialog addSongDialog = new AddSongDialog();
         addMovieDialog.show(fm, addMovieDialog.getTag());
-//        dialogFragments.add(new AddPersonDialog());
-//        dialogFragments.add(new AddAwardDialog());
-//        dialogFragments.add(new AddSongDialog());
-
-        //TODO
-        //Use the isVisible function to maybe cycle through dialogs
-        //Use a lists with all the dialogs and cycle through them accordingly.
-
-
 
     }
 
