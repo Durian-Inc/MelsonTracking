@@ -89,7 +89,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         tableCreations.add(TABLE_PERSON_CREATION);
         tableCreations.add(TABLE_AWARD_CREATION);
         tableCreations.add(TABLE_SONG_CREATION);
-        tableCreations.add((TABLE_DIRECTS_CREATION);
+        tableCreations.add(TABLE_DIRECTS_CREATION);
         tableCreations.add(TABLE_WRITES_CREATION);
         tableCreations.add(TABLE_STARS_CREATION);
         tableCreations.add(TABLE_NOMINATED_CREATION);
@@ -98,6 +98,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         {
             db.execSQL(table);
         }
+
+        //TODO
+        //Perform all of the data insert commands from the SQLite file
     }
 
     @Override
