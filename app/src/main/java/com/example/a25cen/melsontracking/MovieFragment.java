@@ -1,10 +1,8 @@
 package com.example.a25cen.melsontracking;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -28,10 +25,10 @@ public class MovieFragment extends Fragment{
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager layoutManager;
-    ArrayList<MovieCard> list;
-    ArrayList<DialogFragment> dialogFragments;
+    static ArrayList<MovieCard> list;
 
     private  final String TAG = "Movie Fragment";
+
     @Nullable
     @Override
     //TODO
@@ -48,7 +45,9 @@ public class MovieFragment extends Fragment{
         addMovie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialogs();
+                final FragmentManager fm = getFragmentManager();
+                AddMovieDialog addMovieDialog = new AddMovieDialog();
+                addMovieDialog.show(fm, addMovieDialog.getTag());
             }
         });
 
@@ -69,20 +68,6 @@ public class MovieFragment extends Fragment{
         list = new ArrayList<>();
         list.add(new MovieCard("Bee Movie", 2007, 95,150000000));
         list.add(new MovieCard("Top Gun", 1986, 95, 15000000));
-    }
-
-    /* TODO
-    *   Write the function that will expand and collapse
-    * */
-
-    private void showDialogs()
-    {
-        dialogFragments = new ArrayList<>();
-        final FragmentManager fm = getFragmentManager();
-        AddMovieDialog addMovieDialog = new AddMovieDialog();
-        final AddSongDialog addSongDialog = new AddSongDialog();
-        addMovieDialog.show(fm, addMovieDialog.getTag());
-
     }
 
 }

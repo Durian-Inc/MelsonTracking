@@ -29,17 +29,33 @@
             android:layout_toRightOf="@id/textMovie"/>
 
         <TextView
+            android:text="Year: "
+            android:textColor="@android:color/black"
+            style="@style/DialogTextView"
+            android:id="@+id/textReleaseYear"
+            android:layout_alignBottom="@id/editMovieYear"
+            android:layout_below="@+id/textMovie"/>
+
+        <EditText
+            android:id="@+id/editMovieYear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Release Year"
+            android:layout_toRightOf="@id/textReleaseYear"
+            android:layout_below="@id/editMovieTitle"/>
+
+        <TextView
             android:id="@+id/textMovieDurration"
             style="@style/DialogTextView"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/textMovie"
+            android:layout_below="@+id/textReleaseYear"
             android:text="Duration: "
             android:textColor="@android:color/black" />
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/textMovieDurration"
-            android:layout_below="@id/editMovieTitle"
+            android:layout_below="@id/editMovieYear"
             android:hint="Runtime (mins)"
             android:id="@+id/editMovieDurration"
             android:inputType="numberSigned"/>

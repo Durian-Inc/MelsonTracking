@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
+
+
     }
 
     private void setupViewAdapter(ViewPager viewPager){
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(new MovieFragment(), "Movies");
         adapter.addFragment(new PeopleFragment(), "People");
         viewPager.setAdapter(adapter);
-
     }
+
 
 }

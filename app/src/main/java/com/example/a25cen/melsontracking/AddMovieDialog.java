@@ -23,6 +23,7 @@ public class AddMovieDialog extends DialogFragment {
     private EditText movieTitle;
     private EditText movieDurration;
     private EditText movieBudget;
+    private EditText movieYear;
     private Button movieNext;
 
 
@@ -44,17 +45,21 @@ public class AddMovieDialog extends DialogFragment {
         View view  = inflater.inflate(R.layout.dialog_movie_input, container);
         getDialog().setTitle("Enter a movie");
 
+        this.setCancelable(false);
         //Defining EditTexts
         movieTitle = view.findViewById(R.id.editMovieTitle);
         movieBudget = view.findViewById(R.id.editMovieBudget);
         movieDurration = view.findViewById(R.id.editMovieDurration);
         movieNext = view.findViewById(R.id.btnMovieNext);
+        movieYear = view.findViewById(R.id.editMovieYear);
 
         movieTitle.requestFocus();
         movieNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getContext(), movieTitle.getText().toString(), Toast.LENGTH_SHORT).show();
+                MovieFragment.list.add(new MovieCard(movieTitle.getText().toString(), Integer.parseInt(movieYear.getText().toString()), Integer.parseInt(movieDurration.getText().toString())
+                , Integer.parseInt(movieBudget.getText().toString())));
                 dismiss();
 
             }

@@ -10,10 +10,9 @@ import java.util.List;
 public class MovieCard {
 
     private String title;
-    private int runtime, rating = 0, releaseYear;
-    private  float budget = 0;
+    private int runtime, rating = 0, releaseYear, budget = 0;
 
-    public MovieCard(String title, int releaseYear, int runtime, float budget ) {
+    public MovieCard(String title, int releaseYear, int runtime, int budget ) {
         this.title = title;
         this.budget = budget;
         this.releaseYear = releaseYear;
@@ -35,7 +34,7 @@ public class MovieCard {
         return releaseYear;
     }
 
-    public float getBudget() {
+    public int getBudget() {
         return budget;
     }
 }

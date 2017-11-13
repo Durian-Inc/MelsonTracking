@@ -39,6 +39,8 @@ public class AddAwardDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        this.setCancelable(false);
+
         View view = inflater.inflate(R.layout.dialog_award_input, container);
         awardName = view.findViewById(R.id.editAwardName);
         awardGiver = view.findViewById(R.id.editAwardGiver);

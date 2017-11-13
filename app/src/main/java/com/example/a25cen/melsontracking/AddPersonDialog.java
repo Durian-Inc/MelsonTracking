@@ -46,6 +46,8 @@ public class AddPersonDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        this.setCancelable(false);
+
         View view = inflater.inflate(R.layout.dialog_person_input, container);
         getDialog().setTitle("Enter a person");
 

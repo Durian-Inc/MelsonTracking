@@ -32,6 +32,8 @@ public class AddSongDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        this.setCancelable(false);
+
         View view = inflater.inflate(R.layout.dialog_song_input, container);
         getDialog().setTitle("Enter a song");
 
