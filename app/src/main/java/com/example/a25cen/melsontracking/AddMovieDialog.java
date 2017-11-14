@@ -57,11 +57,16 @@ public class AddMovieDialog extends DialogFragment {
         movieNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                DatabaseHelper databaseHelper = new DatabaseHelper(getActivity());
                 Toast.makeText(getContext(), movieTitle.getText().toString(), Toast.LENGTH_SHORT).show();
-                MovieFragment.list.add(new MovieCard(movieTitle.getText().toString(), Integer.parseInt(movieYear.getText().toString()), Integer.parseInt(movieDurration.getText().toString())
-                , Integer.parseInt(movieBudget.getText().toString())));
-                dismiss();
-
+                MovieCard movie = new MovieCard(movieTitle.getText().toString(), Integer.parseInt(movieYear.getText().toString()), Integer.parseInt(movieDurration.getText().toString())
+                        , Integer.parseInt(movieBudget.getText().toString()));
+                if(databaseHelper.insertMovie(movie) != -1) {
+                    MovieFragment.list.add(movie);
+                    dismiss();
+                }else{
+                    Toast.makeText(getContext(), "Movie insertin had an error. Try again", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

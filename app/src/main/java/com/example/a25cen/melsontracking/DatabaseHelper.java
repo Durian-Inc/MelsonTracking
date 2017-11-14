@@ -1,6 +1,8 @@
 package com.example.a25cen.melsontracking;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -14,7 +16,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private final String TAG = "Database Helper";
     private final static short DB_VERSRION = 1;
-    private final String DB_NAME = "Movies Database";
+    private final static String DATABASE_NAME = "Movies Database";
 
     private final String TABLE_MOVIES_CREATION = "CREATE TABLE Movie(" +
             "    MID INT NOT NULL," +
@@ -79,8 +81,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private ArrayList<String> tableCreations = new ArrayList<>();
 
-    public DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
+    public DatabaseHelper(Context context) {
+        super(context, DATABASE_NAME, null, DB_VERSRION);
     }
 
     @Override
@@ -118,5 +120,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public long getRowCount(String tableName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        long count = DatabaseUtils.queryNumEntries(db, tableName);
+        return count;
+    }
+
+    public long insertMovie(MovieCard movie){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("MID", getRowCount("Movie")+1);
+        values.put("Title", movie.getTitle());
+        values.put("Year", movie.getReleaseYear());
+        values.put("Budget", movie.getBudget());
+        values.put("Runtime", movie.getRuntime());
+
+        long movieId = db.insert("Movie", null, values);
+
+        return movieId;
+
+    }
 
 }
