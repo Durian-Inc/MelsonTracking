@@ -65,9 +65,8 @@ public class MovieFragment extends Fragment{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        list = new ArrayList<>();
-        list.add(new MovieCard("Bee Movie", 2007, 95,150000000));
-        list.add(new MovieCard("Top Gun", 1986, 95, 15000000));
+        DatabaseHelper db = new DatabaseHelper(getActivity());
+        list = db.getAllMovies();
     }
 
 }

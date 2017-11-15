@@ -65,7 +65,7 @@ public class AddMovieDialog extends DialogFragment {
                     MovieFragment.list.add(movie);
                     dismiss();
                 }else{
-                    Toast.makeText(getContext(), "Movie insertin had an error. Try again", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Movie inserting had an error. Try again", Toast.LENGTH_SHORT).show();
                 }
             }
         });

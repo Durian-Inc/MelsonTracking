@@ -12,6 +12,8 @@ public class MovieCard {
     private String title;
     private int runtime, releaseYear, budget = 0;
 
+    public MovieCard() {}
+
     public MovieCard(String title, int releaseYear, int runtime, int budget ) {
         this.title = title;
         this.budget = budget;
@@ -36,6 +38,20 @@ public class MovieCard {
 
     public int getBudget() {
         return budget;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setRuntime(int runtime) {this.runtime = runtime;}
+
+    public void setReleaseYear(int releaseYear) {
+        this.releaseYear = releaseYear;
+    }
+
+    public void setBudget(int budget) {
+        this.budget = budget;
     }
 }
 

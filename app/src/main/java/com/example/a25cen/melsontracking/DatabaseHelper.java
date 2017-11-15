@@ -2,10 +2,14 @@ package com.example.a25cen.melsontracking;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Movie;
+import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -139,6 +143,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return movieId;
 
+    }
+
+    //Function to get all the movies using basic selects and then return a list of movies
+    public ArrayList<MovieCard> getAllMovies(){
+        ArrayList<MovieCard> movies = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sqlFindAll = "SELECT * FROM Movie" ;
+        Cursor c = db.rawQuery(sqlFindAll, null);
+        if (c.moveToFirst()) {
+            do {
+                MovieCard currMovie = new MovieCard();
+                currMovie.setTitle(c.getString(c.getColumnIndex("Title")));
+                currMovie.setRuntime(c.getInt(c.getColumnIndex("Runtime")));
+                currMovie.setBudget(c.getInt(c.getColumnIndex("Budget")));
+                currMovie.setReleaseYear(c.getInt(c.getColumnIndex("Year")));
+
+                movies.add(currMovie);
+
+            } while(c.moveToNext());
+        }
+
+        return movies;
     }
 
 }
