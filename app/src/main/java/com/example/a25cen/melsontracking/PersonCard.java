@@ -6,30 +6,39 @@ package com.example.a25cen.melsontracking;
 
 public class PersonCard {
 
-    private String name = "";
-    private char gender = ' ';
-    private int type; // Type defines what type of person they are 0-2
-                        // 0 - Actor
-                        // 1 - Director
-                        // 2 - Writer
-    public PersonCard(String name, char gender, int type) {
-        this.gender = gender;
-        this.type = type;
-        this.name = name;
+    private String name[];
+    private String gender = "";
+    private String role;
+
+    public PersonCard() {
     }
 
-    //Oveloaded constructor
-    public  PersonCard(String name, char gender) {
-        this.gender = gender;
+    public PersonCard(String[] name, String gender) {
         this.name = name;
-        this.type = 0;
+        this.gender = gender;
     }
 
-    public String getName() {
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String[] getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(String[] name) {
         this.name = name;
     }
 

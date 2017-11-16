@@ -34,7 +34,8 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleView
     @Override
     public void onBindViewHolder(PeopleViewHolder holder, int position) {
         PersonCard personCard = people.get(position);
-        holder.personName.setText("Innocent Niyibizi");
+        String[] name = personCard.getName();
+        holder.personName.setText(name[0] + " " + name[1]);
         holder.personAwards.setText("All of them");
         holder.personMovies.setText("Bee Movie & Shrek");
 

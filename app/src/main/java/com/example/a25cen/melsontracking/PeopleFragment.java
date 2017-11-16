@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -41,10 +42,8 @@ public class PeopleFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        list = new ArrayList<PersonCard>();
-        //TODO
-        //Use SQLite to gather and input data accordingly
-        list.add(new PersonCard("Innocent Niyibizi", 'M', 0));
+        DatabaseHelper db = new DatabaseHelper(getActivity());
+        list = db.getAllPeople();
     }
 
     @Nullable

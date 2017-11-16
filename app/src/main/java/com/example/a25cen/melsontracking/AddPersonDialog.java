@@ -65,12 +65,45 @@ public class AddPersonDialog extends DialogFragment {
                 tempRadioId = radioGroupGender.getCheckedRadioButtonId();
                 tempRadio = view.findViewById(tempRadioId);
                 personRole = radioGroupRoles.indexOfChild(tempRadio);
-                if (personGender == -1 && personRole == -1 && personName.getText().length() < 1)
-                {
+                if (personGender == -1 && personRole == -1 && personName.getText().length() < 1) {
                     Toast.makeText(getContext(), "Please enter data in all fields!", Toast.LENGTH_SHORT).show();
                 }
-                else
-                    dismiss();
+                else {
+                    DatabaseHelper db = new DatabaseHelper(getActivity());
+                    PersonCard person;
+                    String role;
+                    String gender;
+                    String[] name = personName.getText().toString().trim().split("\\s+");
+                    if(personGender == 0) {
+                        gender = "Male";
+                    }
+                    else {
+                        gender = "Female";
+                    }
+                    switch (personRole) {
+                        case 0:
+                            role = "Star";
+                            break;
+                        case 1:
+                            role = "Writer";
+                            break;
+                        case 2:
+                            role = "Director";
+                            break;
+                        default:
+                            role = "All";
+                            break;
+                    }
+                    person = new PersonCard(name, gender);
+                    try{
+                        long personId = db.insertPerson(person);
+                        dismiss();
+                    }catch (Exception ex){
+                        Toast.makeText(getContext(), "Person insetion failed", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+
             }
         });
 

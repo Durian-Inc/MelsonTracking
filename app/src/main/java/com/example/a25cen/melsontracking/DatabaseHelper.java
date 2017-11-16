@@ -34,7 +34,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "    PID INT NOT NULL," +
             "    Fname VARCHAR(80) NOT NULL," +
             "    Lname VARCHAR(80) NOT NULL," +
-            "    Gender VARCHAR(20) NOT NULL," +
+            "    Gender VARCHAR(80) NOT NULL," +
             "    PRIMARY KEY (PID)" +
             ")";
     private final String TABLE_AWARD_CREATION = "CREATE TABLE Award(" +
@@ -145,6 +145,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public long insertPerson(PersonCard person){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("PID", getRowCount("Person")+1);
+        values.put("Fname", person.getName()[0]);
+        values.put("Lname", person.getName()[1]);
+        values.put("Gender", person.getGender());
+        long personId = db.insert("Person", null, values);
+
+        return personId;
+    }
     //Function to get all the movies using basic selects and then return a list of movies
     public ArrayList<MovieCard> getAllMovies(){
         ArrayList<MovieCard> movies = new ArrayList<>();
@@ -165,6 +176,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         return movies;
+    }
+
+    public ArrayList<PersonCard> getAllPeople(){
+        ArrayList<PersonCard> people = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sqlFindAll = "SELECT * FROM People" ;
+        Cursor c = db.rawQuery(sqlFindAll, null);
+        if(c.moveToFirst()) {
+            do {
+                PersonCard person = new PersonCard();
+                String[] name = {};
+                name[0] = c.getString(c.getColumnIndex("Fname"));
+                name[1] = c.getString(c.getColumnIndex("Lname"));
+                person.setName(name);
+                person.setGender(c.getString(c.getColumnIndex("Gender")));
+                people.add(person);
+            }while(c.moveToNext());
+        }
+
+
+        return people;
     }
 
 }
