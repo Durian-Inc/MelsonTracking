@@ -181,12 +181,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public ArrayList<PersonCard> getAllPeople(){
         ArrayList<PersonCard> people = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        String sqlFindAll = "SELECT * FROM People" ;
+        String sqlFindAll = "SELECT * FROM Person" ;
         Cursor c = db.rawQuery(sqlFindAll, null);
         if(c.moveToFirst()) {
             do {
                 PersonCard person = new PersonCard();
-                String[] name = {};
+                String[] name = {"",""};
                 name[0] = c.getString(c.getColumnIndex("Fname"));
                 name[1] = c.getString(c.getColumnIndex("Lname"));
                 person.setName(name);
