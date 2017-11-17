@@ -94,9 +94,10 @@ public class AddPersonDialog extends DialogFragment {
                             role = "All";
                             break;
                     }
-                    person = new PersonCard(name, gender);
+                    person = new PersonCard(name, gender, role);
                     try{
-                        long personId = db.insertPerson(person);
+                        db.insertPerson(person);
+                        PeopleFragment.list.add(person);
                         dismiss();
                     }catch (Exception ex){
                         Toast.makeText(getContext(), "Person insetion failed", Toast.LENGTH_SHORT).show();

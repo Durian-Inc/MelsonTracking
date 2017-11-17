@@ -6,10 +6,8 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.Movie;
-import android.widget.Toast;
+import android.util.Log;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -130,6 +128,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return count;
     }
 
+
+    //TODO
+    //Translate all the JAVA code into SQL
+
     public long insertMovie(MovieCard movie){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -148,13 +150,45 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public long insertPerson(PersonCard person){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("PID", getRowCount("Person")+1);
+        long PID = getRowCount("Person")+1, MID = getRowCount("Movie");
+        values.put("PID", PID);
         values.put("Fname", person.getName()[0]);
         values.put("Lname", person.getName()[1]);
         values.put("Gender", person.getGender());
+        switch (person.getRole()) {
+            case "Star":
+                //TODO Insert into star
+
+                break;
+            case "Writer":
+                //TODO Insert into writer
+                break;
+
+            case "Director":
+                //TODO Insert into Director
+                break;
+
+            default:
+                //TODO Insert into all of them
+                break;
+
+        }
+
         long personId = db.insert("Person", null, values);
 
         return personId;
+    }
+
+    public long insertSong(String name, int year, int orig){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("Movie", getRowCount("Movie"));
+        values.put("Name", name);
+        values.put("Year", year);
+        values.put("Original", orig);
+
+        return db.insert("Song", null, values);
+
     }
     //Function to get all the movies using basic selects and then return a list of movies
     public ArrayList<MovieCard> getAllMovies(){
@@ -199,4 +233,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return people;
     }
 
+    public String getMovieSong(int MID){
+        String getSongSQL = "SELECT Name FROM Song WHERE Movie='"+MID+"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(getSongSQL, null);
+        return c.getString(c.getColumnIndex("Name"));
+
+    }
+
+    public void listAllSongs(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sqlFindAll = "SELECT * FROM Song" ;
+        Cursor c = db.rawQuery(sqlFindAll, null);
+        if(c.moveToFirst()) {
+            do {
+                Log.d("Song: ",c.getString(c.getColumnIndex("Name")));
+                Log.d("Movie: ",c.getString(c.getColumnIndex("Movie")));
+
+            }while(c.moveToNext());
+        }
+        return;
+    }
 }

@@ -32,6 +32,8 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleView
         PersonCard personCard = people.get(position);
         String[] name = personCard.getName();
         holder.personName.setText(name[0] + " " + name[1]);
+        //TODO
+        //Get the right awards and movie for each person
         holder.personAwards.setText("All of them");
         holder.personMovies.setText("Bee Movie & Shrek");
 

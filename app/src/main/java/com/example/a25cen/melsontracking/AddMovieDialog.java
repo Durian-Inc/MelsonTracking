@@ -14,10 +14,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 
-/**
- * Created by 25cen on 11/7/17.
- */
-
 public class AddMovieDialog extends DialogFragment {
 
     private EditText movieTitle;
@@ -57,16 +53,19 @@ public class AddMovieDialog extends DialogFragment {
         movieNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DatabaseHelper databaseHelper = new DatabaseHelper(getActivity());
-                Toast.makeText(getContext(), movieTitle.getText().toString(), Toast.LENGTH_SHORT).show();
-                MovieCard movie = new MovieCard(movieTitle.getText().toString(), Integer.parseInt(movieYear.getText().toString()), Integer.parseInt(movieDurration.getText().toString())
-                        , Integer.parseInt(movieBudget.getText().toString()));
-                if(databaseHelper.insertMovie(movie) != -1) {
-                    MovieFragment.list.add(movie);
-                    dismiss();
-                }else{
-                    Toast.makeText(getContext(), "Movie inserting had an error. Try again", Toast.LENGTH_SHORT).show();
+                DatabaseHelper db = new DatabaseHelper(getActivity());
+                if (movieYear.getText().length() > 0) {
+                    MovieCard movie = new MovieCard(movieTitle.getText().toString(), Integer.parseInt(movieYear.getText().toString()), Integer.parseInt(movieDurration.getText().toString())
+                            , Integer.parseInt(movieBudget.getText().toString()));
+                    try {
+                        db.insertMovie(movie);
+                        MovieFragment.list.add(movie);
+                        dismiss();
+                    }catch (Exception ex){
+                        Toast.makeText(getContext(), "Movie inserting had an error", Toast.LENGTH_SHORT).show();
+                    }
                 }
+
             }
         });
 

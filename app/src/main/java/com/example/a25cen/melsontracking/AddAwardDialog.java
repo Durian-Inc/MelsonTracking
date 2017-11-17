@@ -52,6 +52,12 @@ public class AddAwardDialog extends DialogFragment {
             public void onClick(View view) {
                 //TODO
                 //Check that all input is given
+                /*
+                if((awardGiver.getText().length() > 0) && (awardName.getText().length() > 0) &&
+                        (awardYear) ){
+
+                }
+                */
                 dismiss();
             }
         });

@@ -13,9 +13,10 @@ public class PersonCard {
     public PersonCard() {
     }
 
-    public PersonCard(String[] name, String gender) {
+    public PersonCard(String[] name, String gender, String role) {
         this.name = name;
         this.gender = gender;
+        this.role = role;
     }
 
     public String getGender() {

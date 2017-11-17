@@ -39,7 +39,7 @@ public class MovieFragment extends Fragment{
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
-        adapter = new MovieAdapter(list);
+        adapter = new MovieAdapter(this.getActivity(), list);
         recyclerView.setAdapter(adapter);
         FloatingActionButton addMovie = getActivity().findViewById(R.id.floatingActionButton);
         addMovie.setOnClickListener(new View.OnClickListener() {

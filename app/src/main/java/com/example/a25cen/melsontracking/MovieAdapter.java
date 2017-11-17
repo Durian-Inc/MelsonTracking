@@ -1,5 +1,7 @@
 package com.example.a25cen.melsontracking;
 
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,21 +17,29 @@ import java.util.List;
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
     private List<MovieCard> movies;
+    private Context context;
 
     @Override
     public int getItemCount() {
         return movies.size();
     }
 
-    public MovieAdapter(List<MovieCard> movies) {
-        this.movies = movies;
+    public MovieAdapter(Context context, List<MovieCard> movies) {
+        this.movies = movies; this.context = context;
     }
 
     @Override
     public void onBindViewHolder(final MovieViewHolder holder, int position) {
+        DatabaseHelper db = new DatabaseHelper(context);
         MovieCard movieCard = movies.get(position);
         holder.title.setText(movieCard.getTitle());
-        holder.song.setText("Tech Noir");
+        db.listAllSongs();
+        try{
+            holder.song.setText(db.getMovieSong(position+1));
+        }
+        catch (Exception ex) {
+            holder.song.setText("");
+        }
         holder.director.setText("Innocent Niyibizi");
 
     }

@@ -23,7 +23,7 @@ public class PeopleFragment extends Fragment {
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager layoutManager;
-    ArrayList<PersonCard> list;
+    static ArrayList<PersonCard> list;
 
 
     private final String TAG = "People Fragment";
