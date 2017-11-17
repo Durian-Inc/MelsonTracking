@@ -81,6 +81,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "    FOREIGN KEY (Movie) REFERENCES Movie(MID)" +
             ")";
 
+    private final String SQL_GET_DIRECTOR = "SELECT DISTINCT P.Fname, P.Lname" +
+            " FROM Person as P, Directs as D, Movie as M" +
+            " WHERE P.PID = D.Director and Movie = ";
+
     private ArrayList<String> tableCreations = new ArrayList<>();
 
     public DatabaseHelper(Context context) {
@@ -155,26 +159,50 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("Fname", person.getName()[0]);
         values.put("Lname", person.getName()[1]);
         values.put("Gender", person.getGender());
+        long personId = db.insert("Person", null, values);
         switch (person.getRole()) {
             case "Star":
                 //TODO Insert into star
-
+                values.clear();
+                values.put("Star", personId);
+                values.put("Movie", MID);
+                db.insert("Stars", null, values);
                 break;
             case "Writer":
                 //TODO Insert into writer
+                values.clear();
+                values.put("Writer", personId);
+                values.put("Movie", MID);
+                db.insert("Writes", null, values);
                 break;
 
             case "Director":
                 //TODO Insert into Director
+                values.clear();
+                values.put("Director", personId);
+                values.put("Movie", MID);
+                db.insert("Directs", null, values);
                 break;
 
             default:
                 //TODO Insert into all of them
+                values.clear();
+                values.put("Star", personId);
+                values.put("Movie", MID);
+                db.insert("Stars", null, values);
+
+                values.clear();
+                values.put("Director", personId);
+                values.put("Movie", MID);
+                db.insert("Directs", null, values);
+
+                values.clear();
+                values.put("Writer", personId);
+                values.put("Movie", MID);
+                db.insert("Writes", null, values);
                 break;
 
         }
-
-        long personId = db.insert("Person", null, values);
 
         return personId;
     }
@@ -203,7 +231,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 currMovie.setRuntime(c.getInt(c.getColumnIndex("Runtime")));
                 currMovie.setBudget(c.getInt(c.getColumnIndex("Budget")));
                 currMovie.setReleaseYear(c.getInt(c.getColumnIndex("Year")));
-
                 movies.add(currMovie);
 
             } while(c.moveToNext());
@@ -233,25 +260,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return people;
     }
 
-    public String getMovieSong(int MID){
-        String getSongSQL = "SELECT Name FROM Song WHERE Movie='"+MID+"'";
+    public String getMovieSong(long MID){
+        String songName = "";
+        String getSongSQL = "SELECT * FROM Song WHERE Movie="+MID;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(getSongSQL, null);
-        return c.getString(c.getColumnIndex("Name"));
-
+        if(c.moveToFirst()) {
+            songName = c.getString(c.getColumnIndex("Name"));
+        }
+        return songName;
     }
 
-    public void listAllSongs(){
+    public String getAllPeopleInvolved(String table, long position){
+        String peopleInvolved = "", temp[] ={};
         SQLiteDatabase db = this.getReadableDatabase();
-        String sqlFindAll = "SELECT * FROM Song" ;
-        Cursor c = db.rawQuery(sqlFindAll, null);
+        String sqlQuery = "";
+        switch (table){
+            case "Director":
+                sqlQuery = SQL_GET_DIRECTOR + position;
+                break;
+            case "Stars":
+                //TODO Get stars for a movie
+                break;
+        }
+        Cursor c = db.rawQuery(sqlQuery, null);
         if(c.moveToFirst()) {
             do {
-                Log.d("Song: ",c.getString(c.getColumnIndex("Name")));
-                Log.d("Movie: ",c.getString(c.getColumnIndex("Movie")));
-
+                peopleInvolved += c.getString(c.getColumnIndex("P.Fname"));
+                peopleInvolved += " ";
+                peopleInvolved += c.getString(c.getColumnIndex("P.Lname"));
             }while(c.moveToNext());
         }
-        return;
+        c.close();
+        return peopleInvolved;
     }
 }

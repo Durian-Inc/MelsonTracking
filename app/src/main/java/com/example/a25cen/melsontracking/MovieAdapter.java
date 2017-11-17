@@ -33,14 +33,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         DatabaseHelper db = new DatabaseHelper(context);
         MovieCard movieCard = movies.get(position);
         holder.title.setText(movieCard.getTitle());
-        db.listAllSongs();
         try{
             holder.song.setText(db.getMovieSong(position+1));
         }
         catch (Exception ex) {
             holder.song.setText("");
         }
-        holder.director.setText("Innocent Niyibizi");
+        holder.director.setText(db.getAllPeopleInvolved("Director", position+1));
 
     }
 
