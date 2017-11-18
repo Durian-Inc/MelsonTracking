@@ -52,15 +52,50 @@
             android:inputType="numberSigned"/>
 
         <TextView
+            android:id="@+id/textRole"
+            style="@style/DialogTextView"
+            android:text="Role: "
+            android:layout_below="@id/textAwardYear"
+            />
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textRole"
+            android:id="@+id/radioAwardRoles"
+            android:paddingTop="4dp"
+            >
+
+            <RadioButton
+                android:id="@+id/radioStar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/textRole"
+                android:text="Star" />
+            <RadioButton android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Writer"
+                android:id="@+id/radioWriter"/>
+            <RadioButton android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Director"
+                android:id="@+id/radioDirector"/>
+            <RadioButton android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="All"
+                android:id="@+id/radioAll"/>
+        </RadioGroup>
+
+        <TextView
             android:id="@+id/textWon"
             style="@style/DialogTextView"
-            android:layout_below="@id/textAwardYear"
+            android:layout_below="@id/radioAwardRoles"
             android:text="Won: "
             />
         <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/radioWon"
+            android:id="@+id/radioGroupWon"
             android:layout_below="@id/textWon"
             >
             <RadioButton
@@ -80,7 +115,17 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/radioWon"
+            android:layout_below="@+id/radioGroupWon"
+            android:layout_toLeftOf="@id/btnAwardNext"
+            android:text="Add Award"
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/btnAwardAdd"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/radioGroupWon"
             android:layout_alignParentRight="true"
             android:text="Next"
             style="?android:attr/borderlessButtonStyle"

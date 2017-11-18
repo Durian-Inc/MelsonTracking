@@ -1,5 +1,7 @@
 package com.example.a25cen.melsontracking;
 
+import java.util.ArrayList;
+
 /**
  * Created by Innocent on 11/4/17.
  */
@@ -9,6 +11,7 @@ public class PersonCard {
     private String name[];
     private String gender = "";
     private String role;
+    private ArrayList<String> movies;
 
     public PersonCard() {
     }
@@ -42,6 +45,7 @@ public class PersonCard {
     public void setName(String[] name) {
         this.name = name;
     }
+
 
     //No setters and getters because they will be handled by the DB and SQL
 }

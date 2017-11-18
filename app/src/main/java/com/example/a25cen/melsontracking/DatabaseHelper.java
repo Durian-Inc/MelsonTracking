@@ -85,6 +85,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             " FROM Person as P, Directs as D, Movie as M" +
             " WHERE P.PID = D.Director and Movie = ";
 
+    private final String SQL_GET_STARS = "SELECT DISTINCT P.Fname, P.Lname" +
+            " FROM Person as P, Stars as S, Movie as M" +
+            " WHERE P.PID = S.Star and Movie = ";
+
     private ArrayList<String> tableCreations = new ArrayList<>();
 
     public DatabaseHelper(Context context) {
@@ -110,6 +114,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         //TODO
         //Perform all of the data insert commands from the SQLite file
     }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
@@ -162,14 +167,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long personId = db.insert("Person", null, values);
         switch (person.getRole()) {
             case "Star":
-                //TODO Insert into star
                 values.clear();
                 values.put("Star", personId);
                 values.put("Movie", MID);
                 db.insert("Stars", null, values);
                 break;
             case "Writer":
-                //TODO Insert into writer
                 values.clear();
                 values.put("Writer", personId);
                 values.put("Movie", MID);
@@ -177,15 +180,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 break;
 
             case "Director":
-                //TODO Insert into Director
                 values.clear();
                 values.put("Director", personId);
                 values.put("Movie", MID);
                 db.insert("Directs", null, values);
                 break;
 
-            default:
-                //TODO Insert into all of them
+            case "All":
+                //Inserting the person into every category
                 values.clear();
                 values.put("Star", personId);
                 values.put("Movie", MID);
@@ -201,10 +203,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.put("Movie", MID);
                 db.insert("Writes", null, values);
                 break;
-
         }
 
         return personId;
+    }
+
+    public long insertAward(){
+        long awardId = 0;
+
+
+        return awardId;
     }
 
     public long insertSong(String name, int year, int orig){
@@ -235,7 +243,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             } while(c.moveToNext());
         }
-
+        c.close();
         return movies;
     }
 
@@ -256,7 +264,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }while(c.moveToNext());
         }
 
-
+        c.close();
         return people;
     }
 
@@ -268,6 +276,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if(c.moveToFirst()) {
             songName = c.getString(c.getColumnIndex("Name"));
         }
+        c.close();
         return songName;
     }
 
@@ -280,7 +289,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 sqlQuery = SQL_GET_DIRECTOR + position;
                 break;
             case "Stars":
-                //TODO Get stars for a movie
+                sqlQuery = SQL_GET_STARS + position;
                 break;
         }
         Cursor c = db.rawQuery(sqlQuery, null);
@@ -289,6 +298,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 peopleInvolved += c.getString(c.getColumnIndex("P.Fname"));
                 peopleInvolved += " ";
                 peopleInvolved += c.getString(c.getColumnIndex("P.Lname"));
+                if (table == "Stars") peopleInvolved += ", ";
+
             }while(c.moveToNext());
         }
         c.close();

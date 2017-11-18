@@ -40,6 +40,7 @@
             android:id="@+id/editMovieYear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="numberSigned"
             android:hint="Release Year"
             android:layout_toRightOf="@id/textReleaseYear"
             android:layout_below="@id/editMovieTitle"/>

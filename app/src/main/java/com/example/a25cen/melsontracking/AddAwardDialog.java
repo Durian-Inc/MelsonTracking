@@ -1,6 +1,7 @@
 package com.example.a25cen.melsontracking;
 
 import android.content.DialogInterface;
+import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 /**
@@ -19,11 +21,14 @@ import android.widget.RadioGroup;
 
 public class AddAwardDialog extends DialogFragment {
 
-    private EditText awardName;
-    private EditText awardGiver;
-    private RadioGroup radioGroupAwardWon;
-    private EditText awardYear;
-    private Button btnAwardNext;
+    private String awardName;
+    private String awardGiver;
+    private RadioGroup radioGroupTemp;
+    private RadioButton radioButtonSelected;
+    private int personRole = -1;
+    private int awardWon = -1;
+    private String awardYear;
+    private Button btnAwardAdd, btnAwardNext;
 
     public AddAwardDialog() {
     }
@@ -42,22 +47,41 @@ public class AddAwardDialog extends DialogFragment {
         this.setCancelable(false);
 
         View view = inflater.inflate(R.layout.dialog_award_input, container);
-        awardName = view.findViewById(R.id.editAwardName);
-        awardGiver = view.findViewById(R.id.editAwardGiver);
-        awardYear = view.findViewById(R.id.editAwardYear);
+        awardName = view.findViewById(R.id.editAwardName).toString();
+        awardGiver = view.findViewById(R.id.editAwardGiver).toString();
+        awardYear = view.findViewById(R.id.editAwardYear).toString();
 
-        btnAwardNext = view.findViewById(R.id.btnAwardNext);
-        btnAwardNext.setOnClickListener(new View.OnClickListener() {
+        radioGroupTemp = view.findViewById(R.id.radioGroupWon);
+        radioButtonSelected = view.findViewById(radioGroupTemp .getCheckedRadioButtonId()) ;
+        awardWon = radioGroupTemp .indexOfChild(radioButtonSelected);
+
+        radioGroupTemp = view.findViewById(R.id.radioAwardRoles);
+        radioButtonSelected = view.findViewById(radioGroupTemp.getCheckedRadioButtonId());
+        personRole = radioGroupTemp.indexOfChild(radioButtonSelected);
+
+
+        btnAwardAdd = view.findViewById(R.id.btnAwardAdd);
+        btnAwardAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //TODO
                 //Check that all input is given
                 /*
-                if((awardGiver.getText().length() > 0) && (awardName.getText().length() > 0) &&
-                        (awardYear) ){
+                DatabaseHelper db = new DatabaseHelper(getContext());
+                try{
+                    db.insertAward();
+                }catch (Exception ex) {
 
+                }finally {
+                    db.close();
                 }
                 */
+            }
+        });
+        btnAwardNext = view.findViewById(R.id.btnAwardNext);
+        btnAwardNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 dismiss();
             }
         });

@@ -22,7 +22,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textName"
+                    android:id="@+id/textPersonName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
@@ -32,16 +32,34 @@
                     android:textColor="@android:color/black"
                     android:textSize="36sp" />
                 <TextView
-                    android:id="@+id/textRecentMovie"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Directed:"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/black"
+                    android:paddingLeft="16dp"
+                    android:id="@+id/textPersonCardDirects"
+                    />
+                <TextView
+                    android:id="@+id/textPersonCardStars"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Movie"
+                    android:text="Stars in:"
                     android:paddingLeft="16dp"
                     android:textSize="18sp"
                     android:textColor="@android:color/black"
                     />
                 <TextView
-                    android:id="@+id/textAwards"
+                    android:id="@+id/textPersonCardWrites"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Wrote:"
+                    android:paddingLeft="16dp"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/black"
+                    />
+                <TextView
+                    android:id="@+id/textPersonAwards"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Awards"

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+
 import java.util.List;
 
 /**
@@ -33,9 +34,11 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleView
         String[] name = personCard.getName();
         holder.personName.setText(name[0] + " " + name[1]);
         //TODO
-        //Get the right awards and movie for each person
-        holder.personAwards.setText("All of them");
-        holder.personMovies.setText("Bee Movie & Shrek");
+        //Get the right awards and movies for each person
+        holder.personAwards.setText("Awards: #");
+        holder.personMovieStars.setText("Stars in: # Movies");
+        holder.personMovieDirects.setText("Directs: # Movies");
+        holder.personMovieWrites.setText("Wrote: # Movies");
 
     }
 
@@ -45,13 +48,14 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleView
     }
 
     public static class PeopleViewHolder extends RecyclerView.ViewHolder{
-        TextView personName, personMovies, personAwards;
+        TextView personName, personMovieStars, personAwards, personMovieDirects, personMovieWrites;
         public PeopleViewHolder(View view) {
             super(view);
-            personAwards = view.findViewById(R.id.textAwards);
-            personMovies = view.findViewById(R.id.textRecentMovie);
-            personName = view.findViewById(R.id.textName);
-
+            personAwards = view.findViewById(R.id.textPersonAwards);
+            personMovieStars = view.findViewById(R.id.textPersonCardStars);
+            personName = view.findViewById(R.id.textPersonName);
+            personMovieDirects = view.findViewById(R.id.textPersonCardDirects);
+            personMovieWrites = view.findViewById(R.id.textPersonCardWrites);
         }
     }
 }

@@ -15,16 +15,12 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-/**
- * Created by 25cen on 11/7/17.
- */
-
 public class AddPersonDialog extends DialogFragment {
 
     private EditText personName;
-    private int personRole = -1;
+    private String personRole = "";
     private int personGender = -1;
-    private Button btnNextPerson;
+    private Button btnNextPerson, btnAddPerson;
     private RadioGroup radioGroupRoles;
     private RadioGroup radioGroupGender;
     private RadioButton tempRadio;
@@ -52,59 +48,51 @@ public class AddPersonDialog extends DialogFragment {
         getDialog().setTitle("Enter a person");
 
         personName = view.findViewById(R.id.editName);
+        btnAddPerson = view.findViewById(R.id.btnPerseonAdd);
         btnNextPerson = view.findViewById(R.id.btnPerseonNext);
         radioGroupGender = view.findViewById(R.id.radioGender);
         radioGroupRoles = view.findViewById(R.id.radioRoles);
-        btnNextPerson.setOnClickListener(new View.OnClickListener() {
+        btnAddPerson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 tempRadioId = radioGroupGender.getCheckedRadioButtonId();
-                tempRadio = view.findViewById(tempRadioId);
-                personGender = radioGroupGender.indexOfChild(tempRadio);
+                switch (tempRadioId) {
+                    case R.id.radioMale:
+                        personGender = 0;
+                        break;
+                    case R.id.radioFemale:
+                        personGender = 1;
+                        break;
+                }
 
-                tempRadioId = radioGroupGender.getCheckedRadioButtonId();
-                tempRadio = view.findViewById(tempRadioId);
-                personRole = radioGroupRoles.indexOfChild(tempRadio);
-                if (personGender == -1 && personRole == -1 && personName.getText().length() < 1) {
-                    Toast.makeText(getContext(), "Please enter data in all fields!", Toast.LENGTH_SHORT).show();
+                tempRadioId = radioGroupRoles.getCheckedRadioButtonId();
+                personRole = checkRole(tempRadioId);
+                DatabaseHelper db = new DatabaseHelper(getActivity());
+                PersonCard person;
+                String gender;
+                String[] name = personName.getText().toString().trim().split("\\s+");
+                if(personGender == 0) {
+                    gender = "Male";
                 }
                 else {
-                    DatabaseHelper db = new DatabaseHelper(getActivity());
-                    PersonCard person;
-                    String role;
-                    String gender;
-                    String[] name = personName.getText().toString().trim().split("\\s+");
-                    if(personGender == 0) {
-                        gender = "Male";
-                    }
-                    else {
-                        gender = "Female";
-                    }
-                    switch (personRole) {
-                        case 0:
-                            role = "Star";
-                            break;
-                        case 1:
-                            role = "Writer";
-                            break;
-                        case 2:
-                            role = "Director";
-                            break;
-                        default:
-                            role = "All";
-                            break;
-                    }
-                    person = new PersonCard(name, gender, role);
-                    try{
-                        db.insertPerson(person);
-                        PeopleFragment.list.add(person);
-                        dismiss();
-                    }catch (Exception ex){
-                        Toast.makeText(getContext(), "Person insetion failed", Toast.LENGTH_SHORT).show();
-                    }
-
+                    gender = "Female";
+                }
+                person = new PersonCard(name, gender, personRole);
+                try{
+                    db.insertPerson(person);
+                    PeopleFragment.list.add(person);
+                }catch (Exception ex){
+                    Toast.makeText(getContext(), "Person insetion failed", Toast.LENGTH_SHORT).show();
+                }finally {
+                    db.close();
                 }
 
+            }
+        });
+        btnNextPerson.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
             }
         });
 
@@ -112,5 +100,24 @@ public class AddPersonDialog extends DialogFragment {
 
 
         return view;
+    }
+
+    private String checkRole(int id){
+        String role = "";
+        switch (id){
+            case R.id.radioStar:
+                role = "Star";
+                break;
+            case R.id.radioDirector:
+                role = "Director";
+                break;
+            case R.id.radioWriter:
+                role = "Writer";
+                break;
+            case R.id.radioAll:
+                role = "All";
+                break;
+        }
+        return role;
     }
 }

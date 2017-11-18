@@ -89,6 +89,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/radioRoles"
+            android:layout_toLeftOf="@+id/btnPerseonNext"
+            style="@style/Base.Widget.AppCompat.Button.Borderless"
+            android:text="Add Person"
+            android:id="@+id/btnPerseonAdd"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/radioRoles"
             android:layout_alignParentRight="true"
             style="@style/Base.Widget.AppCompat.Button.Borderless"
             android:text="Next"

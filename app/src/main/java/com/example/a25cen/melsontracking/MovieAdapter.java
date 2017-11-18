@@ -34,13 +34,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         MovieCard movieCard = movies.get(position);
         holder.title.setText(movieCard.getTitle());
         try{
-            holder.song.setText(db.getMovieSong(position+1));
+            holder.song.setText("Song: "+db.getMovieSong(position+1));
         }
         catch (Exception ex) {
             holder.song.setText("");
         }
-        holder.director.setText(db.getAllPeopleInvolved("Director", position+1));
-
+        holder.director.setText("Director: "+db.getAllPeopleInvolved("Director", position+1));
+        holder.stars.setText("Stars: "+ db.getAllPeopleInvolved("Stars", position+1));
     }
 
     @Override
@@ -53,12 +53,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     public static class MovieViewHolder extends RecyclerView.ViewHolder{
-        TextView title, song, director;
+        TextView title, song, director, stars;
         public MovieViewHolder(View view) {
             super(view);
             title = view.findViewById(R.id.movieTitle);
             song = view.findViewById(R.id.textSong);
             director = view.findViewById(R.id.textDirectors);
+            stars = view.findViewById(R.id.textStars);
 
         }
     }

@@ -23,7 +23,7 @@ public class MovieFragment extends Fragment{
 
 
     RecyclerView recyclerView;
-    RecyclerView.Adapter adapter;
+    static RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager layoutManager;
     static ArrayList<MovieCard> list;
 
@@ -31,8 +31,6 @@ public class MovieFragment extends Fragment{
 
     @Nullable
     @Override
-    //TODO
-    //Create a dialog fragment
 
     public void onStart() {
         super.onStart();

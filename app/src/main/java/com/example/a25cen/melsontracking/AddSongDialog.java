@@ -1,5 +1,6 @@
 package com.example.a25cen.melsontracking;
 
+import android.content.DialogInterface;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -23,6 +24,13 @@ public class AddSongDialog extends DialogFragment {
     private RadioGroup radioGroupOriginal;
     private Button songFinsih;
 
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        MovieFragment.adapter.notifyDataSetChanged();;
+        return;
+    }
 
     public AddSongDialog() {
 

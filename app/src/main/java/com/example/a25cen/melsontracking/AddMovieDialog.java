@@ -63,6 +63,8 @@ public class AddMovieDialog extends DialogFragment {
                         dismiss();
                     }catch (Exception ex){
                         Toast.makeText(getContext(), "Movie inserting had an error", Toast.LENGTH_SHORT).show();
+                    }finally {
+                        db.close();
                     }
                 }
 
