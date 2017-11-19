@@ -4,10 +4,15 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 /**
@@ -91,6 +96,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private ArrayList<String> tableCreations = new ArrayList<>();
 
+    //Function used to populate DB with some values. Demo reasons
+    public int populateDB(Context context) throws IOException{
+        int rows = 0;
+        SQLiteDatabase db = this.getWritableDatabase();
+        InputStream insertsStream = context.getResources().openRawResource(R.raw.start);
+        BufferedReader insertReader = new BufferedReader(new InputStreamReader(insertsStream));
+        while(insertReader.ready()) {
+            String statement = insertReader.readLine();
+            db.execSQL(statement);
+            rows++;
+        }
+        insertReader.close();
+
+        return rows;
+    }
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DB_VERSRION);
     }
@@ -141,22 +162,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //TODO
     //Translate all the JAVA code into SQL
 
-    public long insertMovie(MovieCard movie){
+    public long insertMovie(MovieCard movie) throws SQLException{
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("MID", getRowCount("Movie")+1);
         values.put("Title", movie.getTitle());
         values.put("Year", movie.getReleaseYear());
-        values.put("Budget", movie.getBudget());
         values.put("Runtime", movie.getRuntime());
+        if (movie.getRuntime() != -1) {
+            values.put("Budget", movie.getBudget());
+        }
 
-        long movieId = db.insert("Movie", null, values);
+        long movieId = db.insertOrThrow("Movie", null, values);
 
         return movieId;
 
     }
 
-    public long insertPerson(PersonCard person){
+    public long insertPerson(PersonCard person) throws SQLException{
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         long PID = getRowCount("Person")+1, MID = getRowCount("Movie");
@@ -170,20 +193,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.clear();
                 values.put("Star", personId);
                 values.put("Movie", MID);
-                db.insert("Stars", null, values);
+                db.insertOrThrow("Stars", null, values);
                 break;
             case "Writer":
                 values.clear();
                 values.put("Writer", personId);
                 values.put("Movie", MID);
-                db.insert("Writes", null, values);
+                db.insertOrThrow("Writes", null, values);
                 break;
 
             case "Director":
                 values.clear();
                 values.put("Director", personId);
                 values.put("Movie", MID);
-                db.insert("Directs", null, values);
+                db.insertOrThrow("Directs", null, values);
                 break;
 
             case "All":
@@ -191,17 +214,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 values.clear();
                 values.put("Star", personId);
                 values.put("Movie", MID);
-                db.insert("Stars", null, values);
+                db.insertOrThrow("Stars", null, values);
 
                 values.clear();
                 values.put("Director", personId);
                 values.put("Movie", MID);
-                db.insert("Directs", null, values);
+                db.insertOrThrow("Directs", null, values);
 
                 values.clear();
                 values.put("Writer", personId);
                 values.put("Movie", MID);
-                db.insert("Writes", null, values);
+                db.insertOrThrow("Writes", null, values);
                 break;
         }
 
@@ -215,7 +238,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return awardId;
     }
 
-    public long insertSong(String name, int year, int orig){
+    public long insertSong(String name, int year, int orig) throws SQLException{
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("Movie", getRowCount("Movie"));
@@ -223,7 +246,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("Year", year);
         values.put("Original", orig);
 
-        return db.insert("Song", null, values);
+        return db.insertOrThrow("Song", null, values);
 
     }
     //Function to get all the movies using basic selects and then return a list of movies
@@ -303,6 +326,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }while(c.moveToNext());
         }
         c.close();
-        return peopleInvolved;
+        if (peopleInvolved.contains(","))
+            return peopleInvolved.substring(0, peopleInvolved.length()-2);
+        else
+            return peopleInvolved;
     }
 }

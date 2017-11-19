@@ -11,7 +11,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -48,6 +51,21 @@ public class MovieFragment extends Fragment{
                 addMovieDialog.show(fm, addMovieDialog.getTag());
             }
         });
+        Button searchMovie = getActivity().findViewById(R.id.btnMovieSearch);
+        searchMovie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatabaseHelper db = new DatabaseHelper(getActivity());
+                try {
+                    int rowsAdded = db.populateDB(getContext());
+                    Toast.makeText(getContext(), rowsAdded, Toast.LENGTH_SHORT).show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
 
     }
 

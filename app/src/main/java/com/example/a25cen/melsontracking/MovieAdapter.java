@@ -2,6 +2,7 @@ package com.example.a25cen.melsontracking;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +11,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-/**
- * Created by Innocent on 11/7/17.
- */
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
@@ -36,7 +34,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         try{
             holder.song.setText("Song: "+db.getMovieSong(position+1));
         }
-        catch (Exception ex) {
+        catch (SQLiteException ex) {
             holder.song.setText("");
         }
         holder.director.setText("Director: "+db.getAllPeopleInvolved("Director", position+1));

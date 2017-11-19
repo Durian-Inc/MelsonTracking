@@ -1,6 +1,8 @@
 package com.example.a25cen.melsontracking;
 
 import android.content.DialogInterface;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteException;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -81,8 +83,8 @@ public class AddPersonDialog extends DialogFragment {
                 try{
                     db.insertPerson(person);
                     PeopleFragment.list.add(person);
-                }catch (Exception ex){
-                    Toast.makeText(getContext(), "Person insetion failed", Toast.LENGTH_SHORT).show();
+                }catch (SQLException ex){
+                    Toast.makeText(getContext(), "Person insertion failed", Toast.LENGTH_SHORT).show();
                 }finally {
                     db.close();
                 }

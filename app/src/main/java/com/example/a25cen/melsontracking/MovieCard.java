@@ -10,7 +10,7 @@ import java.util.List;
 public class MovieCard {
 
     private String title;
-    private int runtime, releaseYear, budget = 0;
+    private int runtime, releaseYear, budget = -1;
 
     public MovieCard() {}
 

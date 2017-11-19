@@ -1,6 +1,7 @@
 package com.example.a25cen.melsontracking;
 
 import android.content.DialogInterface;
+import android.database.SQLException;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -54,18 +55,33 @@ public class AddMovieDialog extends DialogFragment {
             @Override
             public void onClick(View view) {
                 DatabaseHelper db = new DatabaseHelper(getActivity());
-                if (movieYear.getText().length() > 0) {
-                    MovieCard movie = new MovieCard(movieTitle.getText().toString(), Integer.parseInt(movieYear.getText().toString()), Integer.parseInt(movieDurration.getText().toString())
-                            , Integer.parseInt(movieBudget.getText().toString()));
+                try{
+                    MovieCard movie = new MovieCard();
+                    String title = movieTitle.getText().toString();
+                    int year = Integer.parseInt(movieYear.getText().toString());
+                    int durration = Integer.parseInt(movieDurration.getText().toString());
+                    if (movieBudget.getText().length()<=0) {
+                        movie.setReleaseYear(year);
+                        movie.setRuntime(durration);
+                        movie.setTitle(title);
+                    }
+                    else{
+                        movie.setReleaseYear(year);
+                        movie.setRuntime(durration);
+                        movie.setTitle(title);
+                        movie.setBudget(Integer.parseInt(movieBudget.getText().toString()));
+                    }
                     try {
                         db.insertMovie(movie);
                         MovieFragment.list.add(movie);
                         dismiss();
-                    }catch (Exception ex){
+                    }catch (SQLException ex){
                         Toast.makeText(getContext(), "Movie inserting had an error", Toast.LENGTH_SHORT).show();
                     }finally {
                         db.close();
                     }
+                }catch (Exception ex){
+                    Toast.makeText(getContext(), "Please enter a movie title", Toast.LENGTH_SHORT).show();
                 }
 
             }
