@@ -13,11 +13,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-/**
- * Created by Innocent on 11/4/17.
- */
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -44,7 +42,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "    AID INT NOT NULL," +
             "    Giver VARCHAR(80) NOT NULL," +
             "    Title VARCHAR(80) NOT NULL," +
-            "    Role VARCHAR(80) NOT NULL," +
             "    PRIMARY KEY(AID)" +
             ")";
     private final String TABLE_STARS_CREATION = "CREATE TABLE Stars(" +
@@ -79,11 +76,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private final String TABLE_NOMINATED_CREATION = "CREATE TABLE Nominated(" +
             "    Award INT NOT NULL," +
             "    Movie INT NOT NULL," +
+            "    Nominee INT," +
             "    Won INT NOT NULL CHECK (Won >= 0)," +
             "    Year INT NOT NULL," +
             "    PRIMARY KEY (Award, Movie)," +
             "    FOREIGN KEY (Award) REFERENCES Award(AID)," +
-            "    FOREIGN KEY (Movie) REFERENCES Movie(MID)" +
+            "    FOREIGN KEY (Movie) REFERENCES Movie(MID)," +
+            "    FOREIGN KEY (Nominee) REFERENCES Person(PID)"+
             ")";
 
     private final String SQL_GET_DIRECTOR = "SELECT DISTINCT P.Fname, P.Lname" +
@@ -169,7 +168,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("Title", movie.getTitle());
         values.put("Year", movie.getReleaseYear());
         values.put("Runtime", movie.getRuntime());
-        if (movie.getRuntime() != -1) {
+        if (movie.getBudget() != -1) {
             values.put("Budget", movie.getBudget());
         }
 
@@ -262,6 +261,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 currMovie.setRuntime(c.getInt(c.getColumnIndex("Runtime")));
                 currMovie.setBudget(c.getInt(c.getColumnIndex("Budget")));
                 currMovie.setReleaseYear(c.getInt(c.getColumnIndex("Year")));
+                currMovie.setMID(c.getLong(c.getColumnIndex("MID")));
                 movies.add(currMovie);
 
             } while(c.moveToNext());
@@ -283,6 +283,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 name[1] = c.getString(c.getColumnIndex("Lname"));
                 person.setName(name);
                 person.setGender(c.getString(c.getColumnIndex("Gender")));
+                person.setPID(c.getLong(c.getColumnIndex("PID")));
                 people.add(person);
             }while(c.moveToNext());
         }
@@ -291,6 +292,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return people;
     }
 
+    public ArrayList<PersonCard> getAllPeople(long MID){
+        //TODO App crashes
+        ArrayList<PersonCard> people = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sqlFindAll = "SELECT distinct Person.PID AS PID, Person.Fname, Person.Lname" +
+                "FROM Movie, Directs, Writes, Stars, Person" +
+                "Where ((Movie.MID = Directs.Movie and Directs.Director = Person.PID) or " +
+                "(Movie.MID = Writes.Movie and Writes.Writer = Person.PID) or " +
+                "(Movie.MID = Stars.Movie and Stars.Star = Person.PID)) AND Movie.MID = " + MID;
+        Cursor c = db.rawQuery(sqlFindAll, null);
+        if(c.moveToFirst()){
+            do{
+                PersonCard person = new PersonCard();
+                String[] name = {"",""};
+                name[0] = c.getString(c.getColumnIndex("Person.Fname"));
+                name[1] = c.getString(c.getColumnIndex("Person.Lname"));
+                person.setName(name);
+                person.setPID(c.getLong(c.getColumnIndex("PID")));
+                people.add(person);
+            }while (c.moveToNext());
+        }
+        return people;
+    }
     public String getMovieSong(long MID){
         String songName = "";
         String getSongSQL = "SELECT * FROM Song WHERE Movie="+MID;
@@ -330,5 +354,55 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return peopleInvolved.substring(0, peopleInvolved.length()-2);
         else
             return peopleInvolved;
+    }
+
+    public int getCount(String table, long PID){
+        int count = -1;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c;
+        switch (table){
+            case "Stars":
+                String starCount = "SELECT count(*) AS count FROM Stars WHERE Star = " + PID;
+                c = db.rawQuery(starCount, null);
+                if(c.moveToFirst()){
+                    count = c.getInt(c.getColumnIndex("count"));
+                }
+                c.close();
+                break;
+            case "Directs":
+                String directsCount = "SELECT count(*) AS count FROM Directs WHERE Director = " + PID;
+                c = db.rawQuery(directsCount, null);
+                if(c.moveToFirst()){
+                    count = c.getInt(c.getColumnIndex("count"));
+                }
+                c.close();
+                break;
+            case "Writes":
+                String writeCount = "SELECT count(*) AS count FROM Writes WHERE Writer = " + PID;
+                c = db.rawQuery(writeCount, null);
+                if(c.moveToFirst()){
+                    count = c.getInt(c.getColumnIndex("count"));
+                }
+                c.close();
+                break;
+            case "Nominated":
+                String nomiatedCount = "SELECT count(*) AS count FROM Nominated WHERE Nominee = " + PID;
+                c = db.rawQuery(nomiatedCount, null);
+                if(c.moveToFirst()){
+                    count = c.getInt(c.getColumnIndex("count"));
+                }
+                c.close();
+                break;
+            case "Won":
+                String wonCount = "SELECT count(*) AS count FROM Nominated WHERE Nominee = " + PID +" AND Won = 1";
+                c = db.rawQuery(wonCount, null);
+                if(c.moveToFirst()){
+                    count = c.getInt(c.getColumnIndex("count"));
+                }
+                c.close();
+                break;
+        }
+        return count;
+
     }
 }

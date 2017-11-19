@@ -59,10 +59,19 @@
                     android:textColor="@android:color/black"
                     />
                 <TextView
-                    android:id="@+id/textPersonAwards"
+                    android:id="@+id/textPersonAwardsNominated"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Awards"
+                    android:text="Awards Nominated"
+                    android:paddingLeft="16dp"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/black"
+                    />
+                <TextView
+                    android:id="@+id/textPersonAwardsWon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Awards Won"
                     android:paddingLeft="16dp"
                     android:textSize="18sp"
                     android:textColor="@android:color/black"

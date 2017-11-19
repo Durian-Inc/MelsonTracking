@@ -12,6 +12,7 @@ public class PersonCard {
     private String gender = "";
     private String role;
     private ArrayList<String> movies;
+    private long PID = -1;
 
     public PersonCard() {
     }
@@ -46,6 +47,11 @@ public class PersonCard {
         this.name = name;
     }
 
+    public long getPID() {
+        return PID;
+    }
 
-    //No setters and getters because they will be handled by the DB and SQL
+    public void setPID(long PID) {
+        this.PID = PID;
+    }
 }

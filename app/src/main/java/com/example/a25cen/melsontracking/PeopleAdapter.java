@@ -1,5 +1,6 @@
 package com.example.a25cen.melsontracking;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +17,11 @@ import java.util.List;
 public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleViewHolder> {
 
     private List<PersonCard> people;
+    private Context context;
 
-    public PeopleAdapter(List<PersonCard> people) {
+    public PeopleAdapter(Context context, List<PersonCard> people) {
         this.people = people;
+        this.context = context;
     }
 
     @Override
@@ -30,15 +33,18 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleView
 
     @Override
     public void onBindViewHolder(PeopleViewHolder holder, int position) {
+        DatabaseHelper db = new DatabaseHelper(context);
         PersonCard personCard = people.get(position);
         String[] name = personCard.getName();
+        long PID = personCard.getPID();
         holder.personName.setText(name[0] + " " + name[1]);
         //TODO
         //Get the right awards and movies for each person
-        holder.personAwards.setText("Awards: #");
-        holder.personMovieStars.setText("Stars in: # Movies");
-        holder.personMovieDirects.setText("Directs: # Movies");
-        holder.personMovieWrites.setText("Wrote: # Movies");
+        holder.personAwardsWon.setText("Awards Won: " + db.getCount("Won", PID));
+        holder.personAwardsNominated.setText("Awards Nominated: "+db.getCount("Nominated", PID));
+        holder.personMovieStars.setText("Stars in: "+db.getCount("Stars", PID)+" Movies");
+        holder.personMovieDirects.setText("Directs: "+db.getCount("Directs", PID)+" Movies");
+        holder.personMovieWrites.setText("Wrote: "+ db.getCount("Writes", PID)+" Movies");
 
     }
 
@@ -48,14 +54,16 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleView
     }
 
     public static class PeopleViewHolder extends RecyclerView.ViewHolder{
-        TextView personName, personMovieStars, personAwards, personMovieDirects, personMovieWrites;
+        TextView personName, personMovieStars, personAwardsNominated, personMovieDirects, personMovieWrites,
+        personAwardsWon;
         public PeopleViewHolder(View view) {
             super(view);
-            personAwards = view.findViewById(R.id.textPersonAwards);
+            personAwardsNominated = view.findViewById(R.id.textPersonAwardsNominated);
             personMovieStars = view.findViewById(R.id.textPersonCardStars);
             personName = view.findViewById(R.id.textPersonName);
             personMovieDirects = view.findViewById(R.id.textPersonCardDirects);
             personMovieWrites = view.findViewById(R.id.textPersonCardWrites);
+            personAwardsWon = view.findViewById(R.id.textPersonAwardsWon);
         }
     }
 }

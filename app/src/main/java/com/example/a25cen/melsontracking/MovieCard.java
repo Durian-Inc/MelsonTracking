@@ -11,6 +11,7 @@ public class MovieCard {
 
     private String title;
     private int runtime, releaseYear, budget = -1;
+    private long MID;
 
     public MovieCard() {}
 
@@ -52,6 +53,14 @@ public class MovieCard {
 
     public void setBudget(int budget) {
         this.budget = budget;
+    }
+
+    public long getMID() {
+        return MID;
+    }
+
+    public void setMID(long MID) {
+        this.MID = MID;
     }
 }
 

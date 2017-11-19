@@ -57,6 +57,7 @@ public class AddPersonDialog extends DialogFragment {
         btnAddPerson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+               //TODO Wrap insert in a try-catch
                 tempRadioId = radioGroupGender.getCheckedRadioButtonId();
                 switch (tempRadioId) {
                     case R.id.radioMale:
@@ -66,7 +67,6 @@ public class AddPersonDialog extends DialogFragment {
                         personGender = 1;
                         break;
                 }
-
                 tempRadioId = radioGroupRoles.getCheckedRadioButtonId();
                 personRole = checkRole(tempRadioId);
                 DatabaseHelper db = new DatabaseHelper(getActivity());
@@ -81,8 +81,10 @@ public class AddPersonDialog extends DialogFragment {
                 }
                 person = new PersonCard(name, gender, personRole);
                 try{
-                    db.insertPerson(person);
+                    long PID = db.insertPerson(person);
+                    person.setPID(PID);
                     PeopleFragment.list.add(person);
+                    Toast.makeText(getContext(), person.getName()+" has been inserted", Toast.LENGTH_SHORT).show();
                 }catch (SQLException ex){
                     Toast.makeText(getContext(), "Person insertion failed", Toast.LENGTH_SHORT).show();
                 }finally {

@@ -72,8 +72,10 @@ public class AddMovieDialog extends DialogFragment {
                         movie.setBudget(Integer.parseInt(movieBudget.getText().toString()));
                     }
                     try {
-                        db.insertMovie(movie);
+                        long MID = db.insertMovie(movie);
+                        movie.setMID(MID);
                         MovieFragment.list.add(movie);
+                        Toast.makeText(getContext(), movie.getTitle()+" has been inserted!", Toast.LENGTH_SHORT).show();
                         dismiss();
                     }catch (SQLException ex){
                         Toast.makeText(getContext(), "Movie inserting had an error", Toast.LENGTH_SHORT).show();
@@ -81,7 +83,7 @@ public class AddMovieDialog extends DialogFragment {
                         db.close();
                     }
                 }catch (Exception ex){
-                    Toast.makeText(getContext(), "Please enter a movie title", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Please enter a movie title, a runtime, and a year", Toast.LENGTH_SHORT).show();
                 }
 
             }

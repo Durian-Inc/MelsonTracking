@@ -57,8 +57,7 @@ public class MovieFragment extends Fragment{
             public void onClick(View view) {
                 DatabaseHelper db = new DatabaseHelper(getActivity());
                 try {
-                    int rowsAdded = db.populateDB(getContext());
-                    Toast.makeText(getContext(), rowsAdded, Toast.LENGTH_SHORT).show();
+                    db.populateDB(getContext());
                 } catch (IOException e) {
                     e.printStackTrace();
                     Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();

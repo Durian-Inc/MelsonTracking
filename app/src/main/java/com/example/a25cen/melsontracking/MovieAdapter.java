@@ -30,15 +30,16 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     public void onBindViewHolder(final MovieViewHolder holder, int position) {
         DatabaseHelper db = new DatabaseHelper(context);
         MovieCard movieCard = movies.get(position);
+        long MID = movieCard.getMID();
         holder.title.setText(movieCard.getTitle());
         try{
-            holder.song.setText("Song: "+db.getMovieSong(position+1));
+            holder.song.setText("Song: "+db.getMovieSong(MID));
         }
         catch (SQLiteException ex) {
             holder.song.setText("");
         }
-        holder.director.setText("Director: "+db.getAllPeopleInvolved("Director", position+1));
-        holder.stars.setText("Stars: "+ db.getAllPeopleInvolved("Stars", position+1));
+        holder.director.setText("Director: "+db.getAllPeopleInvolved("Director", MID));
+        holder.stars.setText("Stars: "+ db.getAllPeopleInvolved("Stars", MID));
     }
 
     @Override

@@ -34,7 +34,7 @@ public class PeopleFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
-        adapter = new PeopleAdapter(list);
+        adapter = new PeopleAdapter(getContext(), list);
         recyclerView.setAdapter(adapter);
 
     }
