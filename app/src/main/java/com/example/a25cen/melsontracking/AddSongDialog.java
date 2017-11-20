@@ -60,7 +60,7 @@ public class AddSongDialog extends DialogFragment {
                     db.insertSong(songName.getText().toString(), Integer.parseInt(songYear.getText().toString()), orig);
                     dismiss();
                 }catch (Exception ex) {
-                    Toast.makeText(getContext(), "Error inserting", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Error inserting the song", Toast.LENGTH_SHORT).show();
                 }
 
             }

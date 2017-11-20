@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import java.sql.SQLException;
@@ -34,6 +36,8 @@ public class AddAwardDialog extends DialogFragment {
     private EditText awardYear;
     private Button btnAwardAdd, btnAwardNext;
     RadioGroup.LayoutParams rprms;
+    private RadioButton tempRadioButton;
+    private RadioGroup awardWinOrLose;
 
     public AddAwardDialog() {
     }
@@ -78,13 +82,25 @@ public class AddAwardDialog extends DialogFragment {
             radioGroupTemp.addView(radioButton, rprms);
         }
 
+        awardWinOrLose = view.findViewById(R.id.radioGroupAwardWon);
+        awardWinOrLose.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                switch (i){
+                    case R.id.radioAwardWonYes:
+                        awardWon = 1;
+                        break;
+                    case R.id.radioAwardWonNo:
+                        awardWon = 0;
+                        break;
+                }
+            }
+        });
+
         btnAwardAdd = view.findViewById(R.id.btnAwardAdd);
         btnAwardAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO
-                //Check that all input is given
-
                 DatabaseHelper db = new DatabaseHelper(getContext());
                 try{
                     String name = awardName.getText().toString().trim();
@@ -93,27 +109,27 @@ public class AddAwardDialog extends DialogFragment {
                     tempButtonID = radioGroupTemp.getCheckedRadioButtonId();
                     selectedPID = findPID(tempButtonID, people);
 
-                    radioGroupTemp = view.findViewById(R.id.radioGroupWon);
-                    tempButtonID = radioGroupTemp.getCheckedRadioButtonId();
-                    switch (tempButtonID){
-                        case R.id.radioWonYes:
-                            awardWon = 1;
-                            break;
-                        case R.id.radioWonNo:
-                            awardWon = 0;
-                            break;
-                    }
-
                     db.insertAward(name, giver, year, selectedPID, awardWon);
                     Toast.makeText(getContext(), "Added "+name, Toast.LENGTH_SHORT).show();
                     awardYear.setText("");
                     awardName.setText("");
                     awardGiver.setText("");
-                    radioGroupTemp.clearCheck();
-                    RadioGroup people = view.findViewById(R.id.radioGroupPeople);
-                    people.clearCheck();
+                    tempRadioButton = view.findViewById(tempButtonID);
+                    tempRadioButton.setChecked(false);
+                    switch (awardWon){
+                        case 0:
+                            tempRadioButton = view.findViewById(R.id.radioAwardWonNo);
+                            tempRadioButton.setChecked(false);
+                            break;
+                        case 1:
+                            tempRadioButton = view.findViewById(R.id.radioAwardWonYes);
+                            tempRadioButton.setChecked(false);
+                            break;
+
+                    }
                 }catch (Exception ex) {
-                    Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), ex.toString(), Toast.LENGTH_SHORT).show();
+                    Log.d("AWARD INSERT", ex.toString());
                 }finally {
                     db.close();
                 }

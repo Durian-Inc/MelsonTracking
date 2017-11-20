@@ -136,6 +136,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
+    //Allowing deletion cascading to happen.
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        super.onOpen(db);
+        db.execSQL("PRAGMA forign_keys = 'ON'");
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         //Dropping
@@ -234,8 +241,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         long MID = getRowCount("Movie");
         long AID = getRowCount("Award")+1;
-        String awardInsert = "INSERT INTO Award (AID, Giver, Title) VALUES(" + AID + ", " +
-                giver + ", " + name + ")";
+        String awardInsert = "INSERT INTO Award (AID, Giver, Title) VALUES(" + AID + ", \"" +
+                giver + "\", \"" + name + "\")";
         db.execSQL(awardInsert);
         String nominatedInsert = "INSERT INTO Nominated (Award, Movie, Nominee, Won, Year)" +
                 " VALUES (" +AID +", "+ MID +", "+ PID +", " + won+", "+year+")";
