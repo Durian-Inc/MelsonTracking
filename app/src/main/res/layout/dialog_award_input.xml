@@ -58,21 +58,27 @@
             android:text="People: "
             android:layout_below="@id/textAwardYear"
             />
-        <!-- TODO Generate radio buttons for each person involved in the movie -->
-        <RadioGroup
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/textRole"
-            android:id="@+id/radioGroupPeople"
-            android:paddingTop="4dp"
-            >
 
-        </RadioGroup>
+        <ScrollView android:layout_height="100dp"
+            android:layout_width="match_parent"
+            android:fillViewport="true"
+            android:id="@+id/scrollViewPeople"
+            android:layout_below="@+id/textRole"
+            >
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textRole"
+                android:id="@+id/radioGroupPeople"
+                android:paddingTop="4dp"
+                >
+            </RadioGroup>
+        </ScrollView>
 
         <TextView
             android:id="@+id/textWon"
             style="@style/DialogTextView"
-            android:layout_below="@id/radioGroupPeople"
+            android:layout_below="@id/scrollViewPeople"
             android:text="Won: "
             />
         <RadioGroup

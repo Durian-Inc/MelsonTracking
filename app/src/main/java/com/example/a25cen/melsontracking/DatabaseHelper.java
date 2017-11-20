@@ -230,11 +230,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return personId;
     }
 
-    public long insertAward(){
-        long awardId = 0;
-
-
-        return awardId;
+    public long insertAward(String name, String giver, int year, long PID, int won){
+        SQLiteDatabase db = this.getWritableDatabase();
+        long MID = getRowCount("Movie");
+        long AID = getRowCount("Award")+1;
+        String awardInsert = "INSERT INTO Award (AID, Giver, Title) VALUES(" + AID + ", " +
+                giver + ", " + name + ")";
+        db.execSQL(awardInsert);
+        String nominatedInsert = "INSERT INTO Nominated (Award, Movie, Nominee, Won, Year)" +
+                " VALUES (" +AID +", "+ MID +", "+ PID +", " + won+", "+year+")";
+        db.execSQL(nominatedInsert);
+        db.close();
+        return AID;
     }
 
     public long insertSong(String name, int year, int orig) throws SQLException{
@@ -296,11 +303,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         //TODO App crashes
         ArrayList<PersonCard> people = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        String sqlFindAll = "SELECT distinct Person.PID AS PID, Person.Fname, Person.Lname" +
-                "FROM Movie, Directs, Writes, Stars, Person" +
-                "Where ((Movie.MID = Directs.Movie and Directs.Director = Person.PID) or " +
-                "(Movie.MID = Writes.Movie and Writes.Writer = Person.PID) or " +
-                "(Movie.MID = Stars.Movie and Stars.Star = Person.PID)) AND Movie.MID = " + MID;
+        String sqlFindAll = "SELECT DISTINCT PID, Fname, Lname " +
+                "FROM Movie, Directs, Writes, Stars, Person " +
+                "Where ((Movie.MID = Directs.Movie and Directs.Director = PID) or " +
+                "(Movie.MID = Writes.Movie and Writes.Writer = PID) or " +
+                "(Movie.MID = Stars.Movie and Stars.Star = PID)) AND Movie.MID = " + MID;
         Cursor c = db.rawQuery(sqlFindAll, null);
         if(c.moveToFirst()){
             do{

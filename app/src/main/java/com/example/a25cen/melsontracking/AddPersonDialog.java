@@ -85,6 +85,9 @@ public class AddPersonDialog extends DialogFragment {
                     person.setPID(PID);
                     PeopleFragment.list.add(person);
                     Toast.makeText(getContext(), person.getName()+" has been inserted", Toast.LENGTH_SHORT).show();
+                    personName.setText("");
+                    radioGroupGender.clearCheck();
+                    radioGroupRoles.clearCheck();
                 }catch (SQLException ex){
                     Toast.makeText(getContext(), "Person insertion failed", Toast.LENGTH_SHORT).show();
                 }finally {
