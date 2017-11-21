@@ -7,13 +7,11 @@ import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
@@ -48,30 +46,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "    Star INT NOT NULL," +
             "    Movie INT NOT NULL," +
             "    PRIMARY KEY (Star, Movie)," +
-            "    FOREIGN KEY (Star) REFERENCES Person(PID)," +
-            "    FOREIGN KEY (Movie) REFERENCES Movie(MID)" +
+            "    FOREIGN KEY (Star) REFERENCES Person(PID) ON DELETE CASCADE," +
+            "    FOREIGN KEY (Movie) REFERENCES Movie(MID) ON DELETE CASCADE" +
             ")";
     private final String TABLE_WRITES_CREATION = "CREATE TABLE Writes(" +
             "    Writer INT NOT NULL," +
             "    Movie INT NOT NULL," +
             "    PRIMARY KEY (Writer, Movie)," +
-            "    FOREIGN KEY (Writer) REFERENCES Person(PID)," +
-            "    FOREIGN KEY (Movie) REFERENCES Movie(MID)" +
+            "    FOREIGN KEY (Writer) REFERENCES Person(PID) ON DELETE CASCADE," +
+            "    FOREIGN KEY (Movie) REFERENCES Movie(MID) ON DELETE CASCADE" +
             ")";
     private final String TABLE_SONG_CREATION = "CREATE TABLE Song(" +
             "    Movie INT NOT NULL," +
             "    Name VARCHAR(80) NOT NULL," +
             "    Year INT NOT NULL," +
             "    Original INT NOT NULL CHECK (Original >= 0)," +
-            "    FOREIGN KEY (Movie) REFERENCES Movie(MID)," +
+            "    FOREIGN KEY (Movie) REFERENCES Movie(MID) ON DELETE CASCADE," +
             "    PRIMARY KEY (Movie, Name, Year)" +
             ")";
     private final String TABLE_DIRECTS_CREATION = "CREATE TABLE Directs(" +
             "    Director INT NOT NULL," +
             "    Movie INT NOT NULL," +
             "    PRIMARY KEY (Director, Movie)," +
-            "    FOREIGN KEY (Director) REFERENCES Person(PID)," +
-            "    FOREIGN KEY (Movie) REFERENCES Movie(MID)" +
+            "    FOREIGN KEY (Director) REFERENCES Person(PID) ON DELETE CASCADE," +
+            "    FOREIGN KEY (Movie) REFERENCES Movie(MID) ON DELETE CASCADE" +
             ")";
     private final String TABLE_NOMINATED_CREATION = "CREATE TABLE Nominated(" +
             "    Award INT NOT NULL," +
@@ -80,9 +78,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "    Won INT NOT NULL CHECK (Won >= 0)," +
             "    Year INT NOT NULL," +
             "    PRIMARY KEY (Award, Movie)," +
-            "    FOREIGN KEY (Award) REFERENCES Award(AID)," +
-            "    FOREIGN KEY (Movie) REFERENCES Movie(MID)," +
-            "    FOREIGN KEY (Nominee) REFERENCES Person(PID)"+
+            "    FOREIGN KEY (Award) REFERENCES Award(AID) ON DELETE CASCADE," +
+            "    FOREIGN KEY (Movie) REFERENCES Movie(MID) ON DELETE CASCADE," +
+            "    FOREIGN KEY (Nominee) REFERENCES Person(PID) ON DELETE CASCADE"+
             ")";
 
     private final String SQL_GET_DIRECTOR = "SELECT DISTINCT P.Fname, P.Lname" +
@@ -140,7 +138,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onOpen(SQLiteDatabase db) {
         super.onOpen(db);
-        db.execSQL("PRAGMA forign_keys = 'ON'");
+        if (!db.isReadOnly()) {
+            // Enable foreign key constraints
+            db.execSQL("PRAGMA foreign_keys=ON;");
+        }
+
     }
 
     @Override
@@ -418,5 +420,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return count;
 
+    }
+
+    public void deleteMovie(long MID){
+        SQLiteDatabase db = this.getWritableDatabase();
+        String sqlDeleteMovie = "DELETE FROM Movie WHERE MID = " + MID;
+        db.execSQL(sqlDeleteMovie);
+        db.close();
+        return;
     }
 }

@@ -64,7 +64,7 @@
             android:layout_alignParentEnd="true"
             android:clickable="true"
             android:elevation="6dp"
-            app:backgroundTint="@color/colorPrimary"
+            app:backgroundTint="@color/colorAccent"
             app:srcCompat="@drawable/ic_add_white_24dp"
             tools:layout_editor_absoluteX="330dp"
             tools:layout_editor_absoluteY="453dp"

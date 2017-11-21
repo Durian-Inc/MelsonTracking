@@ -16,7 +16,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/appbar_padding_top"
-            android:theme="@style/AppTheme.AppBarOverlay">
+            android:theme="@style/AppTheme.AppBarOverlay"
+            android:background="@color/colorPrimary"
+            >
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -27,6 +29,7 @@
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
                 app:title="@string/app_name"
+
                 >
 
             </android.support.v7.widget.Toolbar>
@@ -36,13 +39,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                app:layout_scrollFlags="scroll|enterAlways">
+                app:layout_scrollFlags="scroll|enterAlways"
+                >
 
                 <android.support.design.widget.TabItem
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Movies"
                     android:icon="@drawable/ic_local_movies_white_24dp"
+                    app:tabIndicatorColor="@color/colorPrimaryLight"
                     />
 
                 <android.support.design.widget.TabItem
@@ -50,6 +55,7 @@
                     android:layout_height="wrap_content"
                     android:text="People"
                     android:icon="@drawable/ic_person_white_24dp"
+                    app:tabIndicatorColor="@color/colorPrimaryLight"
                     />
             </android.support.design.widget.TabLayout>
 
