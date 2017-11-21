@@ -44,6 +44,7 @@ public class PeopleFragment extends Fragment {
         super.onCreate(savedInstanceState);
         DatabaseHelper db = new DatabaseHelper(getActivity());
         list = db.getAllPeople();
+        db.close();
     }
 
     @Nullable

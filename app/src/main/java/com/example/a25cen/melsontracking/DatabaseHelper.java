@@ -91,6 +91,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             " FROM Person as P, Stars as S, Movie as M" +
             " WHERE P.PID = S.Star and Movie = ";
 
+    private final String SQL_GET_GENDER = "SELECT Gender FROM Person WHERE PID = ";
+
     private ArrayList<String> tableCreations = new ArrayList<>();
 
     //Function used to populate DB with some values. Demo reasons
@@ -331,6 +333,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return people;
     }
+
     public String getMovieSong(long MID){
         String songName = "";
         String getSongSQL = "SELECT * FROM Song WHERE Movie="+MID;
@@ -428,5 +431,52 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(sqlDeleteMovie);
         db.close();
         return;
+    }
+
+    public String getGender(long PID){
+        String gender;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(SQL_GET_GENDER+PID, null);
+        c.moveToFirst();
+        gender = c.getString(c.getColumnIndex("Gender"));
+        c.close();
+        db.close();
+        return gender;
+    }
+
+    public ArrayList<String> getNamesOfAwards(String type, long PID){
+        ArrayList<String> giverAndAward = new ArrayList<>();
+        String sqlGetNominations = "SELECT Giver, Title FROM Nominated, Award WHERE (Award = AID) " +
+                "and (Won = 0) AND (Nominee = "+PID+")";
+        String sqlGetWinner = "SELECT Giver, Title FROM Nominated, Award WHERE (Award = AID) " +
+                "and (Won = 1) AND (Nominee = "+PID+")";
+        final SQLiteDatabase db = this.getReadableDatabase();
+        switch (type){
+            case "Won":
+                Cursor c = db.rawQuery(sqlGetWinner, null);
+                String giver, award;
+                if(c.moveToFirst()){
+                    do{
+                        giver = c.getString(c.getColumnIndex("Giver"));
+                        award = c.getString(c.getColumnIndex("Title"));
+                        giverAndAward.add(giver+": "+award);
+                    }while (c.moveToNext());
+                }
+                c.close();
+                break;
+            case "Nominated":
+                c = db.rawQuery(sqlGetNominations, null);
+                if(c.moveToFirst()){
+                    do {
+                        giver = c.getString(c.getColumnIndex("Giver"));
+                        award = c.getString(c.getColumnIndex("Title"));
+                        giverAndAward.add(giver+": "+award);
+                    }while (c.moveToNext());
+                }
+                c.close();
+                break;
+        }
+        db.close();
+        return giverAndAward;
     }
 }

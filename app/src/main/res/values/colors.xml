@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#6a0080</color>
     <color name="colorAccent">#4dd0e1</color>
     <color name="colorPrimaryLight">#d05ce3</color>
+    <color name="textViewColor">#000</color>>
 </resources>

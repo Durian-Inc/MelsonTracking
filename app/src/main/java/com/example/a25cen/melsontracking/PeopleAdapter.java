@@ -1,20 +1,25 @@
 package com.example.a25cen.melsontracking;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Innocent on 11/9/17.
- */
 
 public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleViewHolder> {
 
@@ -36,10 +41,10 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleView
 
     @Override
     public void onBindViewHolder(PeopleViewHolder holder, int position) {
-        DatabaseHelper db = new DatabaseHelper(context);
-        PersonCard personCard = people.get(position);
-        String[] name = personCard.getName();
-        long PID = personCard.getPID();
+        final DatabaseHelper db = new DatabaseHelper(context);
+        final PersonCard personCard = people.get(position);
+        final String[] name = personCard.getName();
+        final long PID = personCard.getPID();
         holder.personName.setText(name[0] + " " + name[1]);
         //TODO
         //Get the right awards and movies for each person
@@ -49,6 +54,54 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleView
         holder.personMovieDirects.setText("Directs: "+db.getCount("Directs", PID)+" Movies");
         holder.personMovieWrites.setText("Wrote: "+ db.getCount("Writes", PID)+" Movies");
         setAnimation(holder.itemView, position);
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ArrayList<String> awardsWon = db.getNamesOfAwards("Won", PID);
+                ArrayList<String> awardsNominated = db.getNamesOfAwards("Nominated", PID);
+                Toast.makeText(context, name[0]+" "+name[1], Toast.LENGTH_SHORT).show();
+                final Dialog dialog = new Dialog(context);
+                dialog.setContentView(R.layout.dialog_person_expanded);
+                dialog.setTitle(name[0]+" "+name[1]);
+                TextView personName = dialog.findViewById(R.id.personExpandedName);
+                TextView personGender = dialog.findViewById(R.id.personExpandedGender);
+                personGender.setText("Gender: "+db.getGender(PID));
+                personName.setText(name[0]+" "+name[1]);
+                final Button closing = dialog.findViewById(R.id.personExpandedButton);
+                closing.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+                LinearLayout wonLinear = dialog.findViewById(R.id.personExpandedWonLinearLayout);
+                LinearLayout nominatedLinear = dialog.findViewById(R.id.personExpandedNominatedLinearLayout);
+                for(String award: awardsWon){
+                    TextView newAward = new TextView(context);
+                    newAward.setText(award);
+                    newAward.setTextSize(20);
+                    newAward.setTextColor(context.getResources().getColor(R.color.textViewColor));
+                    wonLinear.addView(newAward, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                }
+                for(String award: awardsNominated){
+                    TextView newAward = new TextView(context);
+                    newAward.setText(award);
+                    newAward.setTextSize(20);
+                    newAward.setTextColor(context.getResources().getColor(R.color.textViewColor));
+                    nominatedLinear.addView(newAward, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                }
+                //Setting the size of the dialog window to be a decent size
+                WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+                Window dialogWindow = dialog.getWindow();
+                layoutParams.copyFrom(dialogWindow.getAttributes());
+                layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+                layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+                dialogWindow.setAttributes(layoutParams);
+                dialog.show();
+
+            }
+        });
+        db.close();
         //TODO Make animation slower
     }
 
@@ -60,6 +113,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleView
     public static class PeopleViewHolder extends RecyclerView.ViewHolder{
         TextView personName, personMovieStars, personAwardsNominated, personMovieDirects, personMovieWrites,
         personAwardsWon;
+        CardView cardView;
         public PeopleViewHolder(View view) {
             super(view);
             personAwardsNominated = view.findViewById(R.id.textPersonAwardsNominated);
@@ -68,10 +122,11 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleView
             personMovieDirects = view.findViewById(R.id.textPersonCardDirects);
             personMovieWrites = view.findViewById(R.id.textPersonCardWrites);
             personAwardsWon = view.findViewById(R.id.textPersonAwardsWon);
+            cardView = view.findViewById(R.id.cardView);
         }
     }
 
-    private void  setAnimation(View viewToAnimate, int pos){
+    private void setAnimation(View viewToAnimate, int pos){
         if(pos > lastPos){
             Animation animation = AnimationUtils.loadAnimation(viewToAnimate.getContext(),
                     android.R.anim.slide_in_left);
