@@ -444,9 +444,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public ArrayList<String> getNamesOfAwards(String type, long PID){
         ArrayList<String> giverAndAward = new ArrayList<>();
         String sqlGetNominations = "SELECT Giver, Title FROM Nominated, Award WHERE (Award = AID) " +
-                "and (Won = 0) AND (Nominee = "+PID+")";
+                "AND (Nominee = "+PID+")";
         String sqlGetWinner = "SELECT Giver, Title FROM Nominated, Award WHERE (Award = AID) " +
-                "and (Won = 1) AND (Nominee = "+PID+")";
+                "AND (Won = 1) AND (Nominee = "+PID+")";
         final SQLiteDatabase db = this.getReadableDatabase();
         switch (type){
             case "Won":
