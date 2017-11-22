@@ -1,7 +1,6 @@
 package com.example.a25cen.melsontracking;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -27,6 +26,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         return movies.size();
     }
 
+    //Constructor
     public MovieAdapter(Context context, List<MovieCard> movies) {
         this.movies = movies; this.context = context;
     }
@@ -34,6 +34,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     @Override
     public void onBindViewHolder(final MovieViewHolder holder, final int position) {
+        //Giving all the views of the card their appropriate values
         final DatabaseHelper db = new DatabaseHelper(context);
         final MovieCard movieCard = movies.get(position);
         final long MID = movieCard.getMID();
@@ -46,6 +47,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         }
         holder.director.setText("Director: "+db.getAllPeopleInvolved("Director", MID));
         holder.stars.setText("Stars: "+ db.getAllPeopleInvolved("Stars", MID));
+        //Defining the actions that are performed when the delete button is pressed.
+        //When pressed the movie will be removed from the database as well as the recycler view. The card will slide to the right as well
         holder.delteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,10 +64,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             }
         });
         setAnimation(holder.itemView, position);
+        db.close();
     }
 
     @Override
     public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        //Inflating the view with the movie card dialog and setting the viewholder to be an instance of the MovieViewHolder class
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout
                 .card_movie, parent, false);
         MovieViewHolder movieViewHolder = new MovieViewHolder(view);
@@ -72,9 +77,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         return movieViewHolder;
     }
 
+    //Creating the class for the MovieViewHolder
+    //This class will define all of the views in the card
     public static class MovieViewHolder extends RecyclerView.ViewHolder{
         TextView title, song, director, stars;
         Button delteButton;
+        //Constructor for the view holder
         public MovieViewHolder(View view) {
             super(view);
             title = view.findViewById(R.id.movieTitle);
@@ -86,7 +94,17 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         }
     }
 
-    private void  setAnimation(View viewToAnimate, int pos){
+    /*
+        setAnimation
+        Function that sets the animation for the movie cards
+        Pre: viewToAnimate --> The card that will be animated
+             pos --> The position of the view
+        Post: None
+     */
+    private void setAnimation(View viewToAnimate, int pos){
+        //Checking to see if the position is greater than the lastPos
+        //If it is greater than -1 then the card will slide in from the left
+        //lastPos will be set to the current position to keep track of which card has been animated
         if(pos > lastPos){
             Animation animation = AnimationUtils.loadAnimation(viewToAnimate.getContext(),
                     android.R.anim.slide_in_left);

@@ -18,17 +18,16 @@ import android.widget.Toast;
 public class AddSongDialog extends DialogFragment {
 
     private EditText songName;
-    private int tempRadioId;
-    private RadioButton radioYes, radioNo;
+    private RadioButton radioYes;
     private EditText songYear;
-    private RadioGroup radioGroupOriginal;
     private Button songFinsih;
 
 
     @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
-        MovieFragment.adapter.notifyDataSetChanged();;
+        //Notifying the adapter in the movie fragment that the data has changed so the it can be refreshed
+        MovieFragment.adapter.notifyDataSetChanged();
         return;
     }
 
@@ -44,10 +43,10 @@ public class AddSongDialog extends DialogFragment {
         View view = inflater.inflate(R.layout.dialog_song_input, container);
         getDialog().setTitle("Enter a song");
 
+        //Defining all of the views for this dialog
         songName = view.findViewById(R.id.editSongName);
         songYear = view.findViewById(R.id.editSongYear);
         radioYes = view.findViewById(R.id.radioSongYes);
-        radioNo = view.findViewById(R.id.radioSongNo);
         songFinsih = view.findViewById(R.id.btnSongFinsih);
         songFinsih.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,11 +55,23 @@ public class AddSongDialog extends DialogFragment {
                 int orig;
                 if (radioYes.isChecked()) orig = 1;
                 else orig = 0;
+                //Trying to insert the song into the database
+                //If anything goes wrong, the exception will be caught and an error message will be displayed the user
                 try {
-                    db.insertSong(songName.getText().toString(), Integer.parseInt(songYear.getText().toString()), orig);
-                    dismiss();
+                    //Checking to see if the song name and year are both inputted
+                    //If they are then the app will attempt to insert the song into the database
+                    //otherwise the dialog will be dismissed
+                    if(songName.getText().toString().length() > 0 && songYear.getText().toString().length()>0) {
+                        db.insertSong(songName.getText().toString(), Integer.parseInt(songYear.getText().toString()), orig);
+                        dismiss();
+                    }
+                    else {
+                        dismiss();
+                    }
                 }catch (Exception ex) {
                     Toast.makeText(getContext(), "Error inserting the song", Toast.LENGTH_SHORT).show();
+                }finally {
+                    db.close();
                 }
 
             }

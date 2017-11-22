@@ -14,8 +14,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +39,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleView
 
     @Override
     public void onBindViewHolder(PeopleViewHolder holder, int position) {
+        //Defining all of the values for the card as well as functionality
         final DatabaseHelper db = new DatabaseHelper(context);
         final PersonCard personCard = people.get(position);
         final String[] name = personCard.getName();
@@ -52,12 +51,15 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleView
         holder.personMovieDirects.setText("Directs: "+db.getCount("Directs", PID)+" Movies");
         holder.personMovieWrites.setText("Wrote: "+ db.getCount("Writes", PID)+" Movies");
         setAnimation(holder.itemView, position);
+        //Defining what happens when the card is clicked
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Getting arraylists of awards won and nominated for the person
                 ArrayList<String> awardsWon = db.getNamesOfAwards("Won", PID);
                 ArrayList<String> awardsNominated = db.getNamesOfAwards("Nominated", PID);
                 final Dialog dialog = new Dialog(context);
+                //Setting the values of all the views in the expanded people card
                 dialog.setContentView(R.layout.dialog_person_expanded);
                 dialog.setTitle(name[0]+" "+name[1]);
                 TextView personName = dialog.findViewById(R.id.personExpandedName);
@@ -72,10 +74,11 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleView
                     }
                 });
 
+                //Defining the layouts for the award categories and then placing the awards into the categories
                 LinearLayout wonLinear = dialog.findViewById(R.id.personExpandedWonLinearLayout);
                 LinearLayout nominatedLinear = dialog.findViewById(R.id.personExpandedNominatedLinearLayout);
-                insertAwards(wonLinear, awardsWon);
-                insertAwards(nominatedLinear, awardsNominated);
+                insertAwardsToDialog(wonLinear, awardsWon);
+                insertAwardsToDialog(nominatedLinear, awardsNominated);
 
                 //Setting the size of the dialog window to be a decent size
                 WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
@@ -97,6 +100,8 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleView
         return people.size();
     }
 
+    //Creating the class for the PeopleViewHolder
+    //This class will define all of the views in the card
     public static class PeopleViewHolder extends RecyclerView.ViewHolder{
         TextView personName, personMovieStars, personAwardsNominated, personMovieDirects, personMovieWrites,
         personAwardsWon;
@@ -113,6 +118,13 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleView
         }
     }
 
+    /*
+        setAnimation
+        Function that sets the animation for the person cards
+        Pre: viewToAnimate --> The card that will be animated
+             pos --> The position of the view
+        Post: None
+     */
     private void setAnimation(View viewToAnimate, int pos){
         if(pos > lastPos){
             Animation animation = AnimationUtils.loadAnimation(viewToAnimate.getContext(),
@@ -122,7 +134,14 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleView
         }
     }
 
-    private void insertAwards(LinearLayout layout, ArrayList<String> awards) {
+    /*
+        insertAwardsToDialog
+        Function that will insert the awards from the arraylist to the corresponding layout manager
+        Pre: layout --> The linear layout where the values are going to be placed
+             awards --> An arraylist that stores the giver and title of the award that was recived from the database
+        Post: None
+     */
+    private void insertAwardsToDialog(LinearLayout layout, ArrayList<String> awards) {
         for(String award: awards){
             TextView newAward = new TextView(context);
             newAward.setText(award);

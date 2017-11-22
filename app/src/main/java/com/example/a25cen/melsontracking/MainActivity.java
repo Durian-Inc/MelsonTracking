@@ -5,8 +5,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,16 +24,24 @@ public class MainActivity extends AppCompatActivity {
         mViewPager = findViewById(R.id.container);
         setupViewAdapter(mViewPager);
 
+        //Creating the tablayout to allow for changing between the fragments
         TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
     }
 
+    /*
+        setupViewAdapter
+        Function that will setup the view adapter with the fragments that will be used in the application
+        Pre: viewPager --> The layoutmanager that allows for the user to swipe left and right between the tabs of the application
+        Post: None
+     */
     private void setupViewAdapter(ViewPager viewPager){
         SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
         adapter.addFragment(new MovieFragment(), "Movies");
         adapter.addFragment(new PeopleFragment(), "People");
         viewPager.setAdapter(adapter);
+        return;
     }
 
 

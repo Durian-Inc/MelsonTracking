@@ -22,15 +22,12 @@ import android.widget.Toast;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-/**
- * Created by 25cen on 11/8/17.
- */
 
 public class AddAwardDialog extends DialogFragment {
 
     private EditText awardName;
     private EditText awardGiver;
-    private RadioGroup radioGroupTemp;
+    private RadioGroup radioGroupPeople;
     private long selectedPID = -1;
     private int awardWon = -1, tempButtonID = 0;
     private EditText awardYear;
@@ -42,17 +39,6 @@ public class AddAwardDialog extends DialogFragment {
     public AddAwardDialog() {
     }
 
-    private long findPID(int radioButtonSelectedId, ArrayList<PersonCard> people){
-        long PID = -1;
-
-        for (PersonCard person: people){
-            if (person.getPID() == radioButtonSelectedId){
-                PID = person.getPID();
-                break;
-            }
-        }
-        return PID;
-    }
     @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
@@ -72,14 +58,16 @@ public class AddAwardDialog extends DialogFragment {
         awardYear = view.findViewById(R.id.editAwardYear);
         awardName = view.findViewById(R.id.editAwardName);
 
-        radioGroupTemp = view.findViewById(R.id.radioGroupPeople);
+        radioGroupPeople = view.findViewById(R.id.radioGroupPeople);
+        //Creating an arraylist of people from the database which are in the newly added movie
         final ArrayList<PersonCard> people = db.getAllPeople(db.getRowCount("Movie"));
+        //Dynamically creating a radiobutton for each person
         for(PersonCard person: people){
             RadioButton radioButton = new RadioButton(getContext());
             radioButton.setText(person.getName()[0] + " "+ person.getName()[1]);
             radioButton.setId(Integer.parseInt(String.valueOf(person.getPID())));
             rprms = new RadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            radioGroupTemp.addView(radioButton, rprms);
+            radioGroupPeople.addView(radioButton, rprms);
         }
 
         awardWinOrLose = view.findViewById(R.id.radioGroupAwardWon);
@@ -102,33 +90,24 @@ public class AddAwardDialog extends DialogFragment {
             @Override
             public void onClick(View view) {
                 DatabaseHelper db = new DatabaseHelper(getContext());
+                //Trying to insert the award into the database based on the given information
+                //If there are any errors then they will be caught and an error message will be displayed
                 try{
                     String name = awardName.getText().toString().trim();
                     String giver = awardGiver.getText().toString().trim();
                     int year = Integer.parseInt(awardYear.getText().toString().trim());
-                    tempButtonID = radioGroupTemp.getCheckedRadioButtonId();
-                    selectedPID = findPID(tempButtonID, people);
+                    tempButtonID = radioGroupPeople.getCheckedRadioButtonId();
+                    selectedPID = tempButtonID;
 
                     db.insertAward(name, giver, year, selectedPID, awardWon);
                     Toast.makeText(getContext(), "Added "+name, Toast.LENGTH_SHORT).show();
+                    //Clearing all of the elements on the dialog to allow for insertion of another award
                     awardYear.setText("");
                     awardName.setText("");
                     awardGiver.setText("");
-                    tempRadioButton = view.findViewById(tempButtonID);
-                    tempRadioButton.setChecked(false);
-                    switch (awardWon){
-                        case 0:
-                            tempRadioButton = view.findViewById(R.id.radioAwardWonNo);
-                            tempRadioButton.setChecked(false);
-                            break;
-                        case 1:
-                            tempRadioButton = view.findViewById(R.id.radioAwardWonYes);
-                            tempRadioButton.setChecked(false);
-                            break;
-
-                    }
+                    radioGroupPeople.clearCheck();
+                    awardWinOrLose.clearCheck();
                 }catch (Exception ex) {
-                    Toast.makeText(getContext(), ex.toString(), Toast.LENGTH_SHORT).show();
                     Log.d("AWARD INSERT", ex.toString());
                 }finally {
                     db.close();
@@ -137,6 +116,7 @@ public class AddAwardDialog extends DialogFragment {
             }
         });
         btnAwardNext = view.findViewById(R.id.btnAwardNext);
+        //Dismissing the dialog when the next button is pressed
         btnAwardNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

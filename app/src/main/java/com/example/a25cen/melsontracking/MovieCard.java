@@ -1,18 +1,12 @@
 package com.example.a25cen.melsontracking;
 
-import java.util.ArrayList;
-import java.util.List;
-
-/**
- * Created by Innocent on 11/4/17.
- */
-
 public class MovieCard {
 
     private String title;
     private int runtime, releaseYear, budget = -1;
     private long MID;
 
+    //Default constructor
     public MovieCard() {}
 
     public MovieCard(String title, int releaseYear, int runtime, int budget ) {
@@ -22,9 +16,8 @@ public class MovieCard {
         this.runtime = runtime;
     }
 
-    //No getters or setters because it is all handled in the DB and this is only used to transfer
-    //information to the movie
 
+    //Setter and getters for each member variable of this class
     public String getTitle() {
         return title;
     }

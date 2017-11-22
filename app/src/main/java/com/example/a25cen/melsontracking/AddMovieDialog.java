@@ -31,9 +31,10 @@ public class AddMovieDialog extends DialogFragment {
     @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
+        //Displaying the people entry dialog once this dialog is dismissed
         FragmentManager fm = getFragmentManager();
         AddPersonDialog addPersonDialog = new AddPersonDialog();
-        addPersonDialog.show(fm, "Song");
+        addPersonDialog.show(fm, "Person");
     }
 
     @Nullable
@@ -43,23 +44,28 @@ public class AddMovieDialog extends DialogFragment {
         getDialog().setTitle("Enter a movie");
 
         this.setCancelable(false);
-        //Defining EditTexts
+        //Defining EditTexts to get data from the user
         movieTitle = view.findViewById(R.id.editMovieTitle);
         movieBudget = view.findViewById(R.id.editMovieBudget);
         movieDurration = view.findViewById(R.id.editMovieDurration);
         movieNext = view.findViewById(R.id.btnMovieNext);
         movieYear = view.findViewById(R.id.editMovieYear);
 
+        //Setting the focus to be on the title field at start
         movieTitle.requestFocus();
         movieNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DatabaseHelper db = new DatabaseHelper(getActivity());
+                //Trying to insert the movie into the database with the given information
+                //Only the budget can be empty, everything else must have valid data
                 try{
                     MovieCard movie = new MovieCard();
                     String title = movieTitle.getText().toString();
                     int year = Integer.parseInt(movieYear.getText().toString());
                     int durration = Integer.parseInt(movieDurration.getText().toString());
+                    //Checking to see if there is anything in the budget field
+                    //If there is then the movie will have a budget, otherwise the budget will be set to -1
                     if (movieBudget.getText().length()<=0) {
                         movie.setReleaseYear(year);
                         movie.setRuntime(durration);
@@ -71,6 +77,7 @@ public class AddMovieDialog extends DialogFragment {
                         movie.setTitle(title);
                         movie.setBudget(Integer.parseInt(movieBudget.getText().toString()));
                     }
+                    //Trying to insert the movie into the database and setting the long returned to be the MID of the current movie object
                     try {
                         long MID = db.insertMovie(movie);
                         movie.setMID(MID);
@@ -84,6 +91,8 @@ public class AddMovieDialog extends DialogFragment {
                     }
                 }catch (Exception ex){
                     Toast.makeText(getContext(), "Please enter a movie title, a runtime, and a year", Toast.LENGTH_SHORT).show();
+                }finally {
+                    db.close();
                 }
 
             }

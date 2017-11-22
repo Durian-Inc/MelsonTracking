@@ -59,6 +59,8 @@ public class PeopleFragment extends Fragment {
         View view = inflater.inflate(R.layout.people_fragment, container, false);
 
         recyclerView = view.findViewById(R.id.personCardsRecycle);
+        //Defining the swipeRefresh layout that will refresh the cards when swiped up
+        //The delay is set for half a second
         swipeRefreshLayout = view.findViewById(R.id.peopleRefresh);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -74,9 +76,12 @@ public class PeopleFragment extends Fragment {
         });
         editPersonName = view.findViewById(R.id.editPersonSearch);
         btnSearch = view.findViewById(R.id.btnPersonSearch);
+        //Defining the functionality of the search button
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Trying to search for the person in the search field
+                //If any errors occur they will be caught and an error message will be displayed
                 try{
                     String personName = editPersonName.getText().toString();
                     Toast.makeText(getContext(), "Looking for "+personName,

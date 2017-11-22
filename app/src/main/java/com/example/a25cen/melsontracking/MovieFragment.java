@@ -37,6 +37,7 @@ public class MovieFragment extends Fragment{
 
     public void onStart() {
         super.onStart();
+        //Defining the functionality and values of the fragment on start
         movieSearch = getActivity().findViewById(R.id.movieSearch);
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -44,6 +45,7 @@ public class MovieFragment extends Fragment{
         adapter = new MovieAdapter(this.getActivity(), list);
         recyclerView.setAdapter(adapter);
         FloatingActionButton addMovie = getActivity().findViewById(R.id.floatingActionButton);
+        //Defining the values of the addition button
         addMovie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,11 +55,15 @@ public class MovieFragment extends Fragment{
             }
         });
         Button searchMovie = getActivity().findViewById(R.id.btnMovieSearch);
+        //Defining the functionality of the search button
         searchMovie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DatabaseHelper db = new DatabaseHelper(getActivity());
+                //Tying to search or populate the database when the search button is pressed
+                //If any exception is thrown, it will be caught an error message will be displayed to the user
                 try {
+                    //Checking to see if the database is completely empty
                     boolean init = (db.getRowCount("Movie")>0) &&
                             (db.getRowCount("Person")>0) &&
                             (db.getRowCount("Award")>0) &&
@@ -67,12 +73,13 @@ public class MovieFragment extends Fragment{
                             (db.getRowCount("Stars")>0) &&
                             (db.getRowCount("Nominated")>0);
                     if(init == false) {
+                        //Populating the database if it is empty
                         db.populateDB(getContext());
                     }
                     else {
+                        //Finding the movie that matches the search term
                         findMovie(db, movieSearch);
                     }
-
                 } catch (IOException e) {
                     e.printStackTrace();
                     Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
