@@ -57,7 +57,6 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleView
             public void onClick(View view) {
                 ArrayList<String> awardsWon = db.getNamesOfAwards("Won", PID);
                 ArrayList<String> awardsNominated = db.getNamesOfAwards("Nominated", PID);
-                Toast.makeText(context, name[0]+" "+name[1], Toast.LENGTH_SHORT).show();
                 final Dialog dialog = new Dialog(context);
                 dialog.setContentView(R.layout.dialog_person_expanded);
                 dialog.setTitle(name[0]+" "+name[1]);
@@ -72,22 +71,12 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleView
                         dialog.dismiss();
                     }
                 });
+
                 LinearLayout wonLinear = dialog.findViewById(R.id.personExpandedWonLinearLayout);
                 LinearLayout nominatedLinear = dialog.findViewById(R.id.personExpandedNominatedLinearLayout);
-                for(String award: awardsWon){
-                    TextView newAward = new TextView(context);
-                    newAward.setText(award);
-                    newAward.setTextSize(20);
-                    newAward.setTextColor(context.getResources().getColor(R.color.textViewColor));
-                    wonLinear.addView(newAward, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                }
-                for(String award: awardsNominated){
-                    TextView newAward = new TextView(context);
-                    newAward.setText(award);
-                    newAward.setTextSize(20);
-                    newAward.setTextColor(context.getResources().getColor(R.color.textViewColor));
-                    nominatedLinear.addView(newAward, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                }
+                insertAwards(wonLinear, awardsWon);
+                insertAwards(nominatedLinear, awardsNominated);
+
                 //Setting the size of the dialog window to be a decent size
                 WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
                 Window dialogWindow = dialog.getWindow();
@@ -130,6 +119,17 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleView
                     android.R.anim.slide_in_left);
             viewToAnimate.startAnimation(animation);
             lastPos = pos;
+        }
+    }
+
+    private void insertAwards(LinearLayout layout, ArrayList<String> awards) {
+        for(String award: awards){
+            TextView newAward = new TextView(context);
+            newAward.setText(award);
+            newAward.setTextSize(20);
+            newAward.setTextColor(context.getResources().getColor(R.color.textViewColor));
+            layout.addView(newAward, ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
         }
     }
 }

@@ -5,12 +5,12 @@ This application is avalible on the following platforms:
 - [x] Android
 - [ ] iOS
 
-The application has one *simple* goal. That goal is to make the user's life as easy as possible while stille providing them something *_beautiful_* to navigate around.
+The application has one *simple* goal. That goal is to make the user's life as easy as possible while stille providing them something *_beautiful_* to navigate around. This is accomplished with a color scheme that was picked out using the [Material Design Color Tool](https://material.io/color/#!/?view.left=0&view.right=0) and incorporating other material design components such as [Cards](https://material.io/guidelines/components/cards.html) and [Floating Action Buttons](https://material.io/guidelines/components/buttons-floating-action-button.html)
 
 ## The UI
 ### Movies:
 When first launching the application the user is presented with the movies tab.
-![Movies](app/src/main/res/raw/Movies.png)
+![Movies](app/src/main/res/raw/movies.png)
 From the movies tab there are many operations that the user can perform:
 1. View information on movies currently in the database.
     - Title & year

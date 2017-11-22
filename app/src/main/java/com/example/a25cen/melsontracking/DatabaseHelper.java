@@ -95,7 +95,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private ArrayList<String> tableCreations = new ArrayList<>();
 
-    //Function used to populate DB with some values. Demo reasons
+    /*
+        Function that will populate the database with values from the start
+        .sql file
+        Pre: Context --> Current context of the app
+        Post: Returns the number of rows that were inserted into the database
+     */
     public int populateDB(Context context) throws IOException{
         int rows = 0;
         SQLiteDatabase db = this.getWritableDatabase();
@@ -111,10 +116,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return rows;
     }
 
+    /*
+        Constructor for the database
+     */
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DB_VERSRION);
     }
 
+    /*
+        onCreate override function that create the database scheme
+        according to the table creation statements specified above
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         tableCreations.add(TABLE_MOVIES_CREATION);
@@ -134,7 +146,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    //Allowing deletion cascading to happen.
+    /*
+        onOpen override that checks to see if the database is readonly, if it
+         is not then it will execute the provided command.
+         This will allow for deletions to cascade properly
+     */
     @Override
     public void onOpen(SQLiteDatabase db) {
         super.onOpen(db);
@@ -145,6 +161,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    /*
+        onUpgrade override that drops all the tables in reverse order and the
+         recreates them accordingly
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         //Dropping
@@ -160,6 +180,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    /*
+        getRowsCount
+        Function used to get the current row count of a given table
+        Pre: tableName --> Name of the table that a row count is being
+        requested from.
+        Post: count --> Returns the number of rows in the
+     */
     public long getRowCount(String tableName) {
         SQLiteDatabase db = this.getReadableDatabase();
         long count = DatabaseUtils.queryNumEntries(db, tableName);
@@ -167,16 +194,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    //TODO
-    //Translate all the JAVA code into SQL
-
+    /*
+        insertMovie
+        Function that inserts a given movie into the database
+        Pre: movie --> An instance of the MovieCard class that has all of the
+         attributes that are needed for inserting a movie
+        Post: movieId --> The current row index of the given movie. Used to
+        set the MID of the movie
+     */
     public long insertMovie(MovieCard movie) throws SQLException{
         SQLiteDatabase db = this.getWritableDatabase();
+        //Creating a ContentValues instance to hold all the movie values for
+        // insertion
         ContentValues values = new ContentValues();
+        //Placing each attribute with the corresponding column value
         values.put("MID", getRowCount("Movie")+1);
         values.put("Title", movie.getTitle());
         values.put("Year", movie.getReleaseYear());
         values.put("Runtime", movie.getRuntime());
+        //Checking if the value of the budget is -1
+        //  if it is then it will not be inserted into the database
+        //  if it is not then it will be inserted into the database
         if (movie.getBudget() != -1) {
             values.put("Budget", movie.getBudget());
         }
@@ -187,6 +225,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    /*
+        insertPerson
+        Function that inserts a person into the person table and then into
+        the person's respective subclass
+        Pre: person --> An instance of the PersonCard that holds all of th
+        person's attributes
+        Post: personId --> The current row count for the newly inserted person
+     */
     public long insertPerson(PersonCard person) throws SQLException{
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -196,6 +242,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("Lname", person.getName()[1]);
         values.put("Gender", person.getGender());
         long personId = db.insert("Person", null, values);
+        //Switch statement that places the person into their respective
+        // sub-class based on their role
         switch (person.getRole()) {
             case "Star":
                 values.clear();
@@ -239,6 +287,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return personId;
     }
 
+    /*
+        insertAward
+        Function that inserts an award into the Award table and also into the
+         nominated table with a boolean value of  it a person has won or not
+        Pre: name --> name of the award
+             giver --> The giver of the award
+             year --> The year the award was announced
+             PID --> Unique ID number for the person associated with the award
+             won --> 1 or 0 value for if the person won the award
+        Post: AID --> The Award ID number
+     */
     public long insertAward(String name, String giver, int year, long PID, int won){
         SQLiteDatabase db = this.getWritableDatabase();
         long MID = getRowCount("Movie");
@@ -253,6 +312,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return AID;
     }
 
+    /*
+       insertSong
+       Function that inserts a song into the Song table of the database
+       Pre: name --> The name of the song
+            year --> Release year of the song
+            orig --> 1 or 0 value for the originality of the song
+       Post: Returns the current row count of the song
+     */
     public long insertSong(String name, int year, int orig) throws SQLException{
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -264,12 +331,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.insertOrThrow("Song", null, values);
 
     }
-    //Function to get all the movies using basic selects and then return a list of movies
+
+    /*
+        getAllMovies
+        Function that gets all the moves from the database and creates
+        instances of the MovieCard for each one
+        Pre: None
+        Post: Returns an arraylist of MovieCard objects
+     */
     public ArrayList<MovieCard> getAllMovies(){
         ArrayList<MovieCard> movies = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         String sqlFindAll = "SELECT * FROM Movie" ;
+        //Placing the result of the databasae query into a cursor for itterating
         Cursor c = db.rawQuery(sqlFindAll, null);
+        //Moving the cursor to the first element and looping through all the
+        // columns of the cursor and placing the values into the right
+        // attribute of the current MovieCard
+        //Adds the MovieCard instance to the list after all values are collected
         if (c.moveToFirst()) {
             do {
                 MovieCard currMovie = new MovieCard();
@@ -282,10 +361,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             } while(c.moveToNext());
         }
+        //Closing the cursor and database
         c.close();
+        db.close();
         return movies;
     }
 
+    /*
+        getAllPeople
+        Function that gets all the people from the database and creates
+        instances of the PersonCard for each one
+        Pre: None
+        Post: Returns an arraylist of PersonCard objects
+     */
     public ArrayList<PersonCard> getAllPeople(){
         ArrayList<PersonCard> people = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -308,6 +396,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return people;
     }
 
+    /*
+        getAllPeople
+        Function that gets all the people from the database that are
+        associated with a given movie
+        Pre: MID --> The movie that is requesting all of its people
+        Post: An arraylist of PersonCard is returned
+     */
     public ArrayList<PersonCard> getAllPeople(long MID){
         ArrayList<PersonCard> people = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -331,6 +426,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return people;
     }
 
+    /*
+        getMovieSong
+        Function that will find the name of the song with which this movie is
+         associated with, it it exists
+        Pre: MID --> The movie that is requesting the song name
+        Post: songName --> The name of the song from the movie
+     */
     public String getMovieSong(long MID){
         String songName = "";
         String getSongSQL = "SELECT * FROM Song WHERE Movie="+MID;
@@ -340,11 +442,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             songName = c.getString(c.getColumnIndex("Name"));
         }
         c.close();
+        db.close();
         return songName;
     }
 
+    /*
+        getAllPeopleInvolved
+        Function that gets a list of all the people involved in a movie
+        Pre: table --> The type of people that are being requested
+             position --> The movie ID
+        Post: peopleInvolved --> A string with the people's names delimited
+        by commas
+     */
     public String getAllPeopleInvolved(String table, long position){
-        String peopleInvolved = "", temp[] ={};
+        String peopleInvolved = "";
         SQLiteDatabase db = this.getReadableDatabase();
         String sqlQuery = "";
         switch (table){
@@ -366,12 +477,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }while(c.moveToNext());
         }
         c.close();
+        db.close();
+        //Removing the last comma from the string if it exists
         if (peopleInvolved.contains(","))
             return peopleInvolved.substring(0, peopleInvolved.length()-2);
         else
             return peopleInvolved;
     }
 
+    /*
+        getCount
+        Function that performs a count method on the given data
+        Pre: table --> The table that the count needs to be performed on
+             PID --> The person who the count is based on
+        Post: count --> The result from the count function
+     */
     public int getCount(String table, long PID){
         int count = -1;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -418,10 +538,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 c.close();
                 break;
         }
+        db.close();
         return count;
 
     }
 
+    /*
+        deleteMovie
+        Function that removes a movie from the database. This will remove all
+         references to this movie as well
+        Pre: MID --> The movie that will be deleted
+        Post: None
+     */
     public void deleteMovie(long MID){
         SQLiteDatabase db = this.getWritableDatabase();
         String sqlDeleteMovie = "DELETE FROM Movie WHERE MID = " + MID;
@@ -430,6 +558,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return;
     }
 
+    /*
+        getGender
+        Function that returns the gender of a person
+        Pre: PID --> The ID of the person
+        Post: gender --> The gender of the person
+     */
     public String getGender(long PID){
         String gender;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -441,6 +575,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return gender;
     }
 
+    /*
+        getNamesOfAwards
+        Function that gets the names of the awards associated with a person
+        Pre: type --> The type of award that is being sought: won or nominated
+        Post: PID --> The person who the awards are associated with
+     */
     public ArrayList<String> getNamesOfAwards(String type, long PID){
         ArrayList<String> giverAndAward = new ArrayList<>();
         String sqlGetNominations = "SELECT Giver, Title FROM Nominated, Award WHERE (Award = AID) " +
@@ -448,6 +588,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String sqlGetWinner = "SELECT Giver, Title FROM Nominated, Award WHERE (Award = AID) " +
                 "AND (Won = 1) AND (Nominee = "+PID+")";
         final SQLiteDatabase db = this.getReadableDatabase();
+        //Checking which type of award to get and using the corresponding
+        // query statement
         switch (type){
             case "Won":
                 Cursor c = db.rawQuery(sqlGetWinner, null);
