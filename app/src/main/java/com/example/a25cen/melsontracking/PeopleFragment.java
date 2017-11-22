@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -24,6 +26,8 @@ public class PeopleFragment extends Fragment {
     RecyclerView.LayoutManager layoutManager;
     static ArrayList<PersonCard> list;
     SwipeRefreshLayout swipeRefreshLayout;
+    private Button btnSearch;
+    private EditText editPersonName;
 
 
     private final String TAG = "People Fragment";
@@ -66,6 +70,23 @@ public class PeopleFragment extends Fragment {
                         onStart();
                     }
                 }, 500);
+            }
+        });
+        editPersonName = view.findViewById(R.id.editPersonSearch);
+        btnSearch = view.findViewById(R.id.btnPersonSearch);
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try{
+                    String personName = editPersonName.getText().toString();
+                    Toast.makeText(getContext(), "Looking for "+personName,
+                            Toast.LENGTH_SHORT).show();
+                }catch (Exception ex){
+                    Toast.makeText(getContext(), "That person is not found. Try again",
+                            Toast.LENGTH_SHORT).show();
+                }finally {
+                    //TODO Close DB if necessary
+                }
             }
         });
         return view;

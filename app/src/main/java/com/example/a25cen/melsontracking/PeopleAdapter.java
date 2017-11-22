@@ -46,8 +46,6 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleView
         final String[] name = personCard.getName();
         final long PID = personCard.getPID();
         holder.personName.setText(name[0] + " " + name[1]);
-        //TODO
-        //Get the right awards and movies for each person
         holder.personAwardsWon.setText("Awards Won: " + db.getCount("Won", PID));
         holder.personAwardsNominated.setText("Awards Nominated: "+db.getCount("Nominated", PID));
         holder.personMovieStars.setText("Stars in: "+db.getCount("Stars", PID)+" Movies");

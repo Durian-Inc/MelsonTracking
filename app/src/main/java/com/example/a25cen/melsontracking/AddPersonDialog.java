@@ -2,6 +2,7 @@ package com.example.a25cen.melsontracking;
 
 import android.content.DialogInterface;
 import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
@@ -57,41 +58,46 @@ public class AddPersonDialog extends DialogFragment {
         btnAddPerson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               //TODO Wrap insert in a try-catch
-                tempRadioId = radioGroupGender.getCheckedRadioButtonId();
-                switch (tempRadioId) {
-                    case R.id.radioMale:
-                        personGender = 0;
-                        break;
-                    case R.id.radioFemale:
-                        personGender = 1;
-                        break;
-                }
-                tempRadioId = radioGroupRoles.getCheckedRadioButtonId();
-                personRole = checkRole(tempRadioId);
-                DatabaseHelper db = new DatabaseHelper(getActivity());
-                PersonCard person;
-                String gender;
-                String[] name = personName.getText().toString().trim().split("\\s+");
-                if(personGender == 0) {
-                    gender = "Male";
-                }
-                else {
-                    gender = "Female";
-                }
-                person = new PersonCard(name, gender, personRole);
-                try{
-                    long PID = db.insertPerson(person);
-                    person.setPID(PID);
-                    PeopleFragment.list.add(person);
-                    Toast.makeText(getContext(), person.getName()+" has been inserted", Toast.LENGTH_SHORT).show();
-                    personName.setText("");
-                    radioGroupGender.clearCheck();
-                    radioGroupRoles.clearCheck();
-                }catch (SQLException ex){
-                    Toast.makeText(getContext(), "Person insertion failed", Toast.LENGTH_SHORT).show();
-                }finally {
-                    db.close();
+                try {
+                    tempRadioId = radioGroupGender.getCheckedRadioButtonId();
+                    switch (tempRadioId) {
+                        case R.id.radioMale:
+                            personGender = 0;
+                            break;
+                        case R.id.radioFemale:
+                            personGender = 1;
+                            break;
+                    }
+                    tempRadioId = radioGroupRoles.getCheckedRadioButtonId();
+                    personRole = checkRole(tempRadioId);
+                    DatabaseHelper db = new DatabaseHelper(getActivity());
+                    PersonCard person;
+                    String gender;
+                    String[] name = personName.getText().toString().trim().split("\\s+");
+                    if (personGender == 0) {
+                        gender = "Male";
+                    } else {
+                        gender = "Female";
+                    }
+                    person = new PersonCard(name, gender, personRole);
+                    try {
+                        long PID = db.insertPerson(person);
+                        person.setPID(PID);
+                        PeopleFragment.list.add(person);
+                        Toast.makeText(getContext(), person.getName()[0] + " " + person.getName()[1] +
+                                " has been inserted", Toast.LENGTH_SHORT).show();
+                        personName.setText("");
+                        radioGroupGender.clearCheck();
+                        radioGroupRoles.clearCheck();
+                    } catch (SQLException ex) {
+                        Toast.makeText(getContext(), "Person insertion failed",
+                                Toast.LENGTH_SHORT).show();
+                    } finally {
+                        db.close();
+                    }
+                }catch (Exception ex){
+                    Toast.makeText(getContext(), "Error! Please enter all the information",
+                            Toast.LENGTH_SHORT).show();
                 }
 
             }

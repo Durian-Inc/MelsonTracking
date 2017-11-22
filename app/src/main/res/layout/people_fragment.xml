@@ -15,9 +15,13 @@
             android:focusable="true"
             android:focusableInTouchMode="true"
             >
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
             <EditText
-                android:id="@+id/personSearch"
+                android:id="@+id/editPersonSearch"
                 style="@style/Widget.AppCompat.Light.AutoCompleteTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -25,13 +29,22 @@
                 android:inputType="textPersonName"
                 tools:layout_editor_absoluteX="66dp"
                 tools:layout_editor_absoluteY="20dp"
-                android:hint="Search" />
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/personCardsRecycle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@+id/personSearch" />
+                android:hint="Search"
+                android:layout_weight="1"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Search"
+                android:id="@+id/btnPersonSearch"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                />
+        </LinearLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/personCardsRecycle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/personSearch" />
 
         </LinearLayout>
     </android.support.v4.widget.SwipeRefreshLayout>

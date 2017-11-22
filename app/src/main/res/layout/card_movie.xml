@@ -20,10 +20,6 @@
             tools:layout_editor_absoluteY="48dp"
             >
 
-            <!-- TODO
-                Create a section for the awards
-                Create a section for the year as well
-            -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -131,8 +131,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.execSQL(table);
         }
 
-        //TODO
-        //Perform all of the data insert commands from the SQLite file
     }
 
 
@@ -311,7 +309,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<PersonCard> getAllPeople(long MID){
-        //TODO App crashes
         ArrayList<PersonCard> people = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         String sqlFindAll = "SELECT DISTINCT PID, Fname, Lname " +

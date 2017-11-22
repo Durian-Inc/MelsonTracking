@@ -12,14 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-/**
- * Created by Innocent Niyibizi on 11/2/17.
- */
+
 
 
 public class MovieFragment extends Fragment{
@@ -29,6 +28,7 @@ public class MovieFragment extends Fragment{
     static RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager layoutManager;
     static ArrayList<MovieCard> list;
+    EditText movieSearch;
 
     private  final String TAG = "Movie Fragment";
 
@@ -37,6 +37,7 @@ public class MovieFragment extends Fragment{
 
     public void onStart() {
         super.onStart();
+        movieSearch = getActivity().findViewById(R.id.movieSearch);
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
@@ -57,10 +58,26 @@ public class MovieFragment extends Fragment{
             public void onClick(View view) {
                 DatabaseHelper db = new DatabaseHelper(getActivity());
                 try {
-                    db.populateDB(getContext());
+                    boolean init = (db.getRowCount("Movie")>0) &&
+                            (db.getRowCount("Person")>0) &&
+                            (db.getRowCount("Award")>0) &&
+                            (db.getRowCount("Song")>0) &&
+                            (db.getRowCount("Directs")>0) &&
+                            (db.getRowCount("Writes")>0) &&
+                            (db.getRowCount("Stars")>0) &&
+                            (db.getRowCount("Nominated")>0);
+                    if(init == false) {
+                        db.populateDB(getContext());
+                    }
+                    else {
+                        findMovie(db, movieSearch);
+                    }
+
                 } catch (IOException e) {
                     e.printStackTrace();
                     Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+                }finally {
+                    db.close();
                 }
             }
         });
@@ -82,6 +99,17 @@ public class MovieFragment extends Fragment{
         super.onCreate(savedInstanceState);
         DatabaseHelper db = new DatabaseHelper(getActivity());
         list = db.getAllMovies();
+    }
+
+    private void findMovie(DatabaseHelper db, EditText movieSearchField){
+        try{
+            String movieTitle = movieSearchField.getText().toString();
+            Toast.makeText(getContext(), movieTitle + " is being searched!", Toast.LENGTH_SHORT).show();
+        }catch (Exception ex){
+            Toast.makeText(getContext(), "Error in searching", Toast.LENGTH_SHORT).show();
+        }finally {
+            db.close();
+        }
     }
 
 }

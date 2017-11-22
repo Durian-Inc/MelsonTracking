@@ -37,7 +37,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         final DatabaseHelper db = new DatabaseHelper(context);
         final MovieCard movieCard = movies.get(position);
         final long MID = movieCard.getMID();
-        holder.title.setText(movieCard.getTitle());
+        holder.title.setText(movieCard.getTitle()+" ("+movieCard.getReleaseYear()+")");
         try{
             holder.song.setText("Song: "+db.getMovieSong(MID));
         }
