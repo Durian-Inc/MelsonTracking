@@ -618,4 +618,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return giverAndAward;
     }
+
+    /*
+        performSearch
+        Function that will perform a search on any given movie title or
+        person name
+        Pre: table --> The name of the table to check the value for
+             searchTerm --> The value that is being searched for
+        Post: None
+     */
+    public int performSearch(String table, String searchTerm){
+        final SQLiteDatabase db = this.getReadableDatabase();
+        int ID = -1;
+        String SQL_Search = "";
+        Cursor c;
+        switch (table){
+            case "Movie":
+                SQL_Search = "SELECT MID FROM Movie WHERE Title LIKE '%"+
+                        searchTerm+"'";
+                c = db.rawQuery(SQL_Search, null);
+                if(c.moveToFirst()){
+                    ID = c.getInt(c.getColumnIndex("MID"));
+                }
+                break;
+            case "Person":
+                String[] personName = searchTerm.split("\\s+");
+                SQL_Search = "SELECT PID FROM Person WHERE Fname LIKE '%"+
+                        personName[0]+"' AND Lname LIKE '%"+personName[1]+"'";
+                c = db.rawQuery(SQL_Search, null);
+                if(c.moveToFirst()){
+                    ID = c.getInt(c.getColumnIndex("PID"));
+                }
+                break;
+        }
+        return ID;
+    }
 }

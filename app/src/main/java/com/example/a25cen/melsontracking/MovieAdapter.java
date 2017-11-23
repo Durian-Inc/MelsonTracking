@@ -40,7 +40,16 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         final long MID = movieCard.getMID();
         holder.title.setText(movieCard.getTitle()+" ("+movieCard.getReleaseYear()+")");
         try{
-            holder.song.setText("Song: "+db.getMovieSong(MID));
+            String song = db.getMovieSong(MID);
+            if(song.length() > 0){
+                holder.song.setText("Song: "+ song);
+            }
+            else {
+                holder.song.setText("");
+                holder.song.setWidth(0);
+                holder.song.setHeight(0);
+            }
+
         }
         catch (SQLiteException ex) {
             holder.song.setText("");
