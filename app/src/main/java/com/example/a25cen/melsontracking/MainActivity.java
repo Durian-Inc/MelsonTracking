@@ -11,6 +11,8 @@ public class MainActivity extends AppCompatActivity {
     private String TAG = "MainActivity";
     private SectionsPageAdapter pageAdapter;
     private ViewPager mViewPager;
+    private TabLayout tabLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,8 +27,9 @@ public class MainActivity extends AppCompatActivity {
         setupViewAdapter(mViewPager);
 
         //Creating the tablayout to allow for changing between the fragments
-        TabLayout tabLayout = findViewById(R.id.tabs);
+        tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+        setupIcons();
 
     }
 
@@ -41,6 +44,12 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(new MovieFragment(), "Movies");
         adapter.addFragment(new PeopleFragment(), "People");
         viewPager.setAdapter(adapter);
+        return;
+    }
+
+    public void setupIcons(){
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_local_movies_white_24dp);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_person_white_24dp);
         return;
     }
 
