@@ -129,6 +129,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleView
         if(pos > lastPos){
             Animation animation = AnimationUtils.loadAnimation(viewToAnimate.getContext(),
                     android.R.anim.slide_in_left);
+            animation.setDuration(800);
             viewToAnimate.startAnimation(animation);
             lastPos = pos;
         }
